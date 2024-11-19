@@ -220,8 +220,6 @@ fi
 #   source /usr/local/opt/chpharos/share/chpharos/chpharos.sh
 # fi
 
-[ -x "$(command -v thefuck)" ] && eval "$(thefuck --alias)"
-
 [ -f /etc/grc.bashrc ] && source /etc/grc.bashrc:-
 [ -f /usr/local/etc/grc.bashrc ] && source /usr/local/etc/grc.bashrc
 

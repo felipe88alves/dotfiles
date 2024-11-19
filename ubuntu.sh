@@ -26,6 +26,8 @@ installPackages() {
   # if ! [ -x "$(command -v docker)" ]; then
   #   installDocker
   # fi
+
+  sudo apt upgrade
 }
 
 case "$1" in

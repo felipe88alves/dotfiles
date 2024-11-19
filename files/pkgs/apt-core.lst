@@ -1,7 +1,6 @@
 aptitude
 build-essential
 curl
-thefuck
 python3-pip
 neovim
 colordiff
@@ -19,7 +18,6 @@ zsh
 
 ## GIT
 git
-git-delta
 
 ## Automation
 ansible

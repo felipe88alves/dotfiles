@@ -145,10 +145,6 @@ else
   plugins[1,0]=(tmux)
 fi
 
-if [[ $OSTYPE != *"android"* ]]; then
-  plugins=(${plugins[@]} thefuck)
-fi
-
 # Bash like CDPATH
 typeset -U path cdpath fpath
 setopt auto_cd autocd
