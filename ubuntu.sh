@@ -19,7 +19,7 @@ installDocker() {
 }
 
 installPackages() {
-  sudo apt update
+  sudo apt update -y
   cat files/pkgs/apt-core.lst | grep -v '^$\|^\s*\#' | tr '\n' ' ' | xargs sudo apt install -y
   sudo apt-mark manual $(cat files/pkgs/apt-core.lst | grep -v '^$\|^\s*\#' | tr '\n' ' ')
 
@@ -27,7 +27,7 @@ installPackages() {
   #   installDocker
   # fi
 
-  sudo apt upgrade
+  sudo apt upgrade -y
 }
 
 case "$1" in
