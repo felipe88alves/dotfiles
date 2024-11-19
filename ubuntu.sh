@@ -19,11 +19,6 @@ installDocker() {
 }
 
 installPackages() {
-  if ! [ -x "$(command -v git)" ]; then
-    echo 'installing git!' >&2
-    sudo apt install git
-  fi
-
   sudo apt update
   cat files/pkgs/apt-core.lst | grep -v '^$\|^\s*\#' | tr '\n' ' ' | xargs sudo apt install -y
   sudo apt-mark manual $(cat files/pkgs/apt-core.lst | grep -v '^$\|^\s*\#' | tr '\n' ' ')

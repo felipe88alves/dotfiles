@@ -137,8 +137,8 @@ if [[ -x "$(command -v zellij)" ]] && [[ "${ZELLIJ_AUTOSTART}" == "true" ]] ; th
   eval "$(zellij setup --generate-auto-start zsh)"
 else
   # Tmux plugin config
-  export ZSH_TMUX_AUTOSTART=true
-  export ZSH_TMUX_AUTOSTART_ONCE=true
+  export ZSH_TMUX_AUTOSTART=false
+  export ZSH_TMUX_AUTOSTART_ONCE=false
   export ZSH_TMUX_AUTOQUIT=true
   export ZSH_TMUX_AUTOCONNECT=false
 

@@ -3,7 +3,7 @@ build-essential
 curl
 thefuck
 python3-pip
-nvim
+neovim
 colordiff
 
 #tmux
@@ -19,6 +19,7 @@ zsh
 
 ## GIT
 git
+git-delta
 
 ## Automation
 ansible

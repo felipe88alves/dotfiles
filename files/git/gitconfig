@@ -52,23 +52,23 @@
   piss = push
   pill = pull
 [core]
-  # pager = less -RF -X
-  pager = delta
-  editor = vim #nvim
+  pager = less -RF -X
+  # pager = delta
+  editor = vim
   excludesfile = ~/.gitexcludes
-[interactive]
-  diffFilter = delta --color-only
-[delta]
-  navigate = true    # use n and N to move between diff sections
-  light = false      # set to true if you're in a terminal w/ a light background color (e.g. the default macOS terminal)
-  side-by-side = true
-  line-numbers = true
-  tabs = 2
-  file-style = box
-  hyperlinks = true
-  hyperlinks-file-link-format = "file-line://{path}:{line}"
-[merge]
-  conflictstyle = diff3
+# [interactive]
+  # diffFilter = delta --color-only
+# [delta]
+#   # navigate = true    # use n and N to move between diff sections
+#   # light = false      # set to true if you're in a terminal w/ a light background color (e.g. the default macOS terminal)
+#   side-by-side = true
+#   line-numbers = true
+#   tabs = 2
+#   file-style = box
+#   hyperlinks = true
+#   hyperlinks-file-link-format = "file-line://{path}:{line}"
+# [merge]
+#   conflictstyle = diff3
 [diff]
   colorMoved = default
 # [pager]

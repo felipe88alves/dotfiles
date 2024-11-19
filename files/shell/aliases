@@ -98,9 +98,9 @@ function calc() {
 # Bash weather app
 function wttr() {
   location=${1:-}
-  if [[ -z "${location:-}" ]];then {
+  if [[ -z "${location:-}" ]];then
     curl "wttr.in/Athlone"
-  }
+  fi
   curl "wttr.in/${1}"
 }
 alias wttr_moon='curl wttr.in/Moon'

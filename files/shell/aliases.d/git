@@ -4,6 +4,7 @@
 ## Git
 alias gs="git status"
 alias gc="git commit"
+alias gcm="git commit -m"
 alias gca="git commit --amend"
 alias gcan="git commit --amend --no-edit"
 alias gr="git restore"
@@ -96,8 +97,7 @@ alias gdst='git diff --stat'
 alias gdm='git diff $(git-main_branch)'
 alias gdms='git diff $(git-main_branch) --stat'
 alias gpl='git pull'
-alias gph='git push'
-alias gcm='git checkout $(git-main_branch)'
+alias gpsh='git push'
 alias gco='git checkout'
 alias gcom='git checkout $(git-main_branch)'
 alias grbm='git rebase $(git-main_branch)'

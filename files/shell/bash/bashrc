@@ -3,19 +3,8 @@
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
-if [[ "${CONFIGURED}" == "true" ]]; then
+if [[ "${CONFIGURED:-}" == "true" ]]; then
   return
-fi
-
-# Ghostty shell integration for Bash.
-if [ -n "${GHOSTTY_RESOURCES_DIR}" ]; then
-  builtin source "${GHOSTTY_RESOURCES_DIR}/shell-integration/bash/ghostty.bash"
-fi
-
-# Kitty shell integration
-if [ -n "${KITTY_INSTALLATION_DIR}" ]; then
-  export KITTY_SHELL_INTEGRATION="enabled"
-  source "${KITTY_INSTALLATION_DIR}/shell-integration/bash/kitty.bash"
 fi
 
 # If not running interactively, don't do anything
@@ -27,10 +16,6 @@ case $- in
 esac
 
 export TERM='xterm-256color'
-
-if [ -n "${GHOSTTY_RESOURCES_DIR}" ]; then
-  TERM='xterm-ghostty'
-fi
 
 if [[ $(tty) == "/dev/tty"* ]] && [[ $OSTYPE == "linux-gnu" ]]; then
   setfont ter-powerline-v16b.psf.gz
@@ -237,7 +222,7 @@ fi
 
 [ -x "$(command -v thefuck)" ] && eval "$(thefuck --alias)"
 
-[ -f /etc/grc.bashrc ] && source /etc/grc.bashrc
+[ -f /etc/grc.bashrc ] && source /etc/grc.bashrc:-
 [ -f /usr/local/etc/grc.bashrc ] && source /usr/local/etc/grc.bashrc
 
 if [ -n "${HOMEBREW_PREFIX}" ]; then
