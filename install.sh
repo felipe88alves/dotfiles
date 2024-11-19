@@ -116,7 +116,7 @@ installZshConf() {
 
   echo ">>> oh-my-zsh"
   if [ ! -d "${HOME}"/.oh-my-zsh ]; then
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
   else
     cd "${HOME}"/.oh-my-zsh || exit
     git pull
@@ -139,6 +139,8 @@ installZshConf() {
   cp files/shell/zsh/zshrc "${HOME}/.zshrc"
   cp files/shell/zsh/zshHighlightStyle "${HOME}/.zshrcHighlightStyle"
   cp files/shell/zsh/p10k.zsh "${HOME}/.p10k.zsh"
+
+  chsh -s $(which zsh)
 }
 
 installDotFiles() {
