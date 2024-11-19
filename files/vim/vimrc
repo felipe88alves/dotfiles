@@ -1,0 +1,75 @@
+" Best view with a 256 color terminal and Powerline fonts
+
+set nocompatible
+set pyxversion=3
+
+" set shell=bash
+" let g:is_bash = 1
+
+" OS detection
+if !exists("g:os")
+  if has("win64") || has("win32") || has("win16")
+    let g:os = "Windows"
+  else
+    let g:os = substitute(system('uname -o'), '\n', '', '')
+  endif
+endif
+
+" Load config files
+for f in split(glob('~/.vim/config/*.vim'), '\n')
+  exe 'source' f
+endfor
+
+" Extra {{{
+  command! PU PlugUpdate | PlugUpgrade
+  "command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
+
+  " :W sudo saves the file
+  " (useful for handling the permission-denied error)
+  command W :execute ':silent w !sudo tee % > /dev/null' | :edit!
+
+  fun! DiffToggle()
+    if &diff
+      windo set cursorline
+      windo diffoff
+    else
+      windo set nocursorline
+      windo diffthis
+    endif
+  endfun
+
+  command! DiffToggle call DiffToggle()
+  nnoremap <silent> <Leader>df :call DiffToggle()<CR>
+
+  fun! TrimWhitespace()
+    let l:save_cursor = getpos('.')
+    %s/\s\+$//e
+    call setpos('.', l:save_cursor)
+  endfun
+
+  command! TrimWhitespace call TrimWhitespace()
+  noremap <Leader>w :call TrimWhitespace()<CR>
+  " Some people like to automatically do this before they write a file to disk, like so:
+  if has('autocmd')
+    au BufWritePre * :call TrimWhitespace()
+    au BufWritePre * if &filetype == 'terraform' | :call terraform#fmt() | endif
+  endif
+
+  nmap <leader>sp :call <SID>SynStack()<CR>
+  fun! <SID>SynStack()
+    if !exists("*synstack")
+      return
+    endif
+    echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
+  endfun
+" }}}
+
+" this machine's config
+if filereadable(expand("~/.vimrc.local"))
+  source ~/.vimrc.local
+endif
+
+if exists("g:loaded_webdevicons")
+  call webdevicons#refresh()
+endif
+

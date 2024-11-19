@@ -1,0 +1,47 @@
+function! s:gl(buf, l1, l2)
+  if !exists(':Gllog')
+    return
+  endif
+  tab split
+  silent! execute a:l1 == 1 && a:l2 == line('$') ? '' : "'<,'>" 'Gllog'
+  call setloclist(0, insert(getloclist(0), {'bufnr': a:buf}, 0))
+  b #
+  lopen
+  xnoremap <buffer> o :call <sid>gld()<cr>
+  nnoremap <buffer> o <cr><c-w><c-w>
+  nnoremap <buffer> q :tabclose<cr>
+  call matchadd('Conceal', '^fugitive:///.\{-}\.git//')
+  call matchadd('Conceal', '^fugitive:///.\{-}\.git//\x\{7}\zs.\{-}||')
+  setlocal concealcursor=nv conceallevel=3 nowrap
+endfunction
+
+function! s:gld() range
+  let [to, from] = map([a:firstline, a:lastline], 'split(getline(v:val), "|")[0]')
+  execute 'tabedit' to
+  execute 'vsplit' from
+  windo diffthis
+endfunction
+
+command! -range=% GL call s:gl(bufnr(''), <line1>, <line2>)
+
+fu! PasteWindow(direction) "{{{
+    if exists("g:yanked_buffer")
+        if a:direction == 'edit'
+            let temp_buffer = bufnr('%')
+        endif
+
+        exec a:direction . " +buffer" . g:yanked_buffer
+
+        if a:direction == 'edit'
+            let g:yanked_buffer = temp_buffer
+        endif
+    endif
+endf "}}}
+
+"yank/paste buffers
+:nmap <silent> <leader>wy  :let g:yanked_buffer=bufnr('%')<cr>
+:nmap <silent> <leader>wd  :let g:yanked_buffer=bufnr('%')<cr>:q<cr>
+:nmap <silent> <leader>wp :call PasteWindow('edit')<cr>
+:nmap <silent> <leader>ws :call PasteWindow('split')<cr>
+:nmap <silent> <leader>wv :call PasteWindow('vsplit')<cr>
+:nmap <silent> <leader>wt :call PasteWindow('tabnew')<cr>

@@ -1,0 +1,31 @@
+source ${HOME}/.bash/complete-alias/complete_alias
+
+# complete -F __start_kubectl kctl
+# source <(kubectl completion bash | sed 's/kubectl/kctl/g')
+
+# _code() {
+#   local cur=${COMP_WORDS[COMP_CWORD]};
+#   local code=$(code; ls -1)
+#   COMPREPLY=( $(compgen -W "$code" -- $cur) );
+# }
+# complete -F _code code
+
+# docker-enter completion
+_docker-enter() {
+  local cur=${COMP_WORDS[COMP_CWORD]};
+  local containers=$(docker ps -q | xargs -r -n1 docker inspect --format "{{.Name}}" | awk '{printf("%s ", substr($1,2))}')
+  COMPREPLY=( $(compgen -W "$containers" -- $cur) );
+}
+complete -F _docker-enter docker-enter
+
+_kubectl-enter() {
+  local cur=${COMP_WORDS[COMP_CWORD]};
+  local pods=$(kubectl get pods -o name | sed -e 's@pod/@@')
+  COMPREPLY=( $(compgen -W "$pods" -- $cur) );
+}
+complete -F _kubectl-enter kubectl-enter
+
+if type _completion_loader &> /dev/null; then
+  complete -F _complete_alias kctl
+  complete -F _complete_alias kube
+fi

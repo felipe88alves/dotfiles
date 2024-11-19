@@ -1,0 +1,24 @@
+aptitude
+build-essential
+curl
+thefuck
+python3-pip
+nvim
+colordiff
+
+#tmux
+#jq
+#unrar
+#unzip
+#linux-image-generic
+
+## Terminal
+zsh
+#fonts-powerline
+#fonts-font-awesome
+
+## GIT
+git
+
+## Automation
+ansible

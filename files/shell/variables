@@ -1,0 +1,119 @@
+#!/usr/bin/env bash
+export COLORTERM='truecolor'
+
+export TERM="xterm-256color"
+
+export NVIM_TUI_ENABLE_TRUE_COLOR=1
+
+# export EDITOR=vim
+# export VISUAL=vim
+export EDITOR=nvim
+export VISUAL=nvim
+
+export VALID_FQDN='^(?=.{1,255}$)[0-9A-Za-z](?:(?:[0-9A-Za-z]|-){0,61}[0-9A-Za-z])?(?:\.[0-9A-Za-z](?:(?:[0-9A-Za-z]|-){0,61}[0-9A-Za-z])?)*\.?$'
+export VALID_IP='[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'
+
+export DARK_MODE=Y
+
+# Colors
+export ESC_SEQ="\x1b["
+export COL_RESET=$ESC_SEQ"39;49;00m"
+export COL_RED=$ESC_SEQ"31;01m"
+export COL_GREEN=$ESC_SEQ"32;01m"
+export COL_YELLOW=$ESC_SEQ"33;01m"
+export COL_BLUE=$ESC_SEQ"34;01m"
+export COL_MAGENTA=$ESC_SEQ"35;01m"
+export COL_CYAN=$ESC_SEQ"36;01m"
+export COL_GREY=$ESC_SEQ"38;5;245m"
+
+export PISTOL_CHROMA_FORMATTER=terminal256
+
+# Colored less
+export LESS='-R'
+
+# Colored man pages
+export LESS_TERMCAP_mb=$'\E[01;31m'
+export LESS_TERMCAP_md=$'\E[01;31m'
+export LESS_TERMCAP_me=$'\E[0m'
+export LESS_TERMCAP_so=$'\E[01;44;33m'
+export LESS_TERMCAP_se=$'\E[0m'
+export LESS_TERMCAP_us=$'\E[01;32m'
+export LESS_TERMCAP_ue=$'\E[0m'
+
+# export LESS_TERMCAP_mb=$(tput bold; tput setaf 2) # green
+# export LESS_TERMCAP_md=$(tput bold; tput setaf 6) # cyan
+# export LESS_TERMCAP_me=$(tput sgr0)
+# export LESS_TERMCAP_so=$(tput bold; tput setaf 3; tput setab 4) # yellow on blue
+# export LESS_TERMCAP_se=$(tput rmso; tput sgr0)
+# export LESS_TERMCAP_us=$(tput smul; tput bold; tput setaf 7) # white
+# export LESS_TERMCAP_ue=$(tput rmul; tput sgr0)
+# export LESS_TERMCAP_mr=$(tput rev)
+# export LESS_TERMCAP_mh=$(tput dim)
+# export LESS_TERMCAP_ZN=$(tput ssubm)
+# export LESS_TERMCAP_ZV=$(tput rsubm)
+# export LESS_TERMCAP_ZO=$(tput ssupm)
+# export LESS_TERMCAP_ZW=$(tput rsupm)
+export GROFF_NO_SGR=1
+
+export LESSCOLOR="true"
+
+if type highlight >/dev/null 2>&1; then
+  export LESSCOLORIZER="highlight --out-format=xterm256 --input"
+elif type pygmentize >/dev/null 2>&1; then
+  export LESSCOLORIZER='pygmentize'
+fi
+
+export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+export BAT_THEME='Enki-Tokyo-Night'
+# export BAT_PAGER="less -R"
+export DELTA_PAGER="less -LREFX"
+export PAGER="bat -p"
+export AWS_PAGER="bat -p ${AWS_PAGER_OPTS}"
+
+# Colored grep
+# export GREP_OPTIONS='--color=auto'
+
+# Colored GCC warnings and errors
+# export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+# export FLAGS_GETOPT_CMD="$(brew --prefix gnu-getopt)/bin/getopt"
+
+export GRC_ALIASES=true
+
+# Dockr config
+if [ -x "$(command -v colima)" ]; then
+  export DOCKER_HOST="unix://${HOME}/.colima/docker.sock"
+fi
+
+# GO config
+export GOPROXY="https://proxy.golang.org,direct"
+export GO111MODULE=on
+export GOVIM_GOPLS_FLAGS=-remote=auto
+
+if [ -f "${HOME}/.config/gh/hosts.yml" ]; then
+  export GITHUB_TOKEN=$(yq '."github.com".oauth_token' ~/.config/gh/hosts.yml | tr -d '[:blank:]')
+  export GITHUB_API_TOKEN="${GITHUB_TOKEN}"
+  export GITHUB_PKG_REG_TOKEN="${GITHUB_TOKEN}"
+fi
+
+# fzf config
+# Use ag for feeding into fzf for searching files.
+export FZF_DEFAULT_COMMAND='ag -U --hidden --ignore .git -g ""'
+# Color: https://github.com/junegunn/fzf/wiki/Color-schemes - Solarized Dark
+# Bind F1 key to toggle preview window on/off
+# export FZF_DEFAULT_OPTS='--height 10 --bind "F1:toggle-preview" --preview "rougify {} 2> /dev/null || cat {} 2> /dev/null || tree -C {} 2> /dev/null | head -100" --color dark,hl:33,hl+:37,fg+:235,bg+:136,fg+:254 --color info:254,prompt:37,spinner:108,pointer:235,marker:235'
+export FZF_DEFAULT_OPTS='--height 10'
+
+# Show long commands if needed
+# From https://github.com/junegunn/fzf/wiki/Configuring-shell-key-bindings
+# Bind F1 key to toggle preview window on/off
+export FZF_CTRL_R_OPTS='--bind "F1:toggle-preview" --preview "echo {}" --preview-window down:3:hidden:wrap'
+
+export KITTY_CONFIG_DIRECTORY="${HOME}/.config/kitty/"
+
+export SLACK_THEME_SHELL_PROFILE="${HOME}/.profile"
+
+export BASH_COMPLETION_USER_DIR="${HOME}/.local/share/bash-completion"
+
+export TESTSSL_INSTALL_DIR=~/.testssl
+
+export TIME='\t%E real,\t%U user,\t%S sys,\t%K amem,\t%M mmem'

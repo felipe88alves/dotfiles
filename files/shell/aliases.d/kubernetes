@@ -1,0 +1,128 @@
+# ----------------------------------------------------------
+
+# KUBECTL
+
+alias k="kubectl"
+alias kg="kubectl get"
+alias kga="kubectl api-resources --verbs=list --namespaced -o name | xargs -n 1 kubectl get --show-kind --ignore-not-found"
+alias kgp="kubectl get pods"
+alias kgpa="kubectl get pods -A"
+alias kgpo="kubectl get pods -oyaml"
+alias kgs="kubectl get services"
+alias kgso="kubectl get services -oyaml"
+alias kgd="kubectl get deploy"
+alias kgdo="kubectl get deploy -oyaml"
+alias kgj="kubectl get job"
+alias kgjo="kubectl get job -oyaml"
+alias kghr="kubectl get helmrelease"
+alias kghrb="kubectl get helmrelease | grep -v True"
+alias kghrba="kubectl get helmrelease -A | grep -v True"
+alias kghro="kubectl get helmrelease -oyaml"
+alias kghc="kubectl get helmchart"
+alias kging="kubectl get ingress"
+alias kgingo="kubectl get ingress -oyaml"
+alias kgsec="kubectl get secret"
+alias kgseco="kubectl get secret -oyaml"
+alias kgrs="kubectl get replicaset"
+alias kgo="kubectl get -oyaml"
+alias kgall="kubectl api-resources --verbs=list --namespaced='true' -o name | xargs -n 1 kubectl get --show-kind --ignore-not-found"
+
+alias kd="kubectl describe"
+alias kdp="kubectl describe pod"
+alias kds="kubectl describe service"
+alias kdd="kubectl describe deployment"
+alias kdhr="kubectl describe helmrelease"
+alias kdhc="kubectl describe helmchart"
+alias kding="kubectl describe ingress"
+alias kdsec="kubectl describe secret"
+alias kdrs="kubectl describe replicaset"
+
+alias krr="kubectl rollout restart"
+
+alias kcrt="kubectl get clusterreleasetemplate"
+alias kcrde="kubectl get clusterreleasedeployment"
+alias kcrel="kubectl get crel -A"
+
+alias kc="kubectl config"
+alias kccc="kubectl config current-context"
+
+alias kdel="kubectl delete"
+alias ke="kubectl edit"
+alias kl="kubectl logs"
+alias klf="kubectl logs -f"
+alias kaf="kubectl apply -f"
+alias ka="kubectl apply"
+
+alias kct="kubectx"
+alias kns="kubens"
+alias cctl="clusterctl"
+alias ksw="switch"
+
+alias kgpba="kubectl get pods -A | egrep -v '(Running|Completed)'"
+alias kgpb="kubectl get pods | egrep -v '(Running|Completed)'"
+
+
+# ----------------------------------------------------------
+
+# HELM
+
+alias hls="helm ls -a"
+alias hf="helm ls -a -f"
+alias hlsa="helm ls -A -a"
+alias hlsb="helm ls -a | egrep -v deployed"
+alias hlsba="helm ls -A -a | egrep -v deployed"
+alias hh="helm history"
+alias hs="helm status"
+
+## helm get resources
+function hgr() { 
+    PROMPT_EOL_MARK='' helm get manifest "$1" | yq -r '[{"kind":.kind, "name":.metadata.name}] | .[] | [.kind, .name] | join(" ")' | grep -v "\-\-\-" | xargs -L 1 -I {} /bin/bash -c 'kubectl get {}' ''
+}
+
+## helm get resources within namespace
+function hgrn {
+    PROMPT_EOL_MARK='' helm get manifest "$1" | yq -r '[{"namespace":.metadata.namespace, "kind":.kind, "name":.metadata.name}] | .[] | [.kind, .name, "-n", .namespace] | join(" ")' | grep -v "\-\-\-" | xargs -L 1 -I {} /bin/bash -c 'kubectl get {}' ''
+}
+
+## helm list resources
+function hlr {
+    helm get manifest "$1" | yq -r '[{"kind":.kind, "name":.metadata.name}] | .[] | [.kind, .name] | join(" ")' | grep -v "\-\-\-" 
+}
+
+# ----------------------------------------------------------
+
+# EVENT-ROUTER
+
+## Check access to ServiceDesk
+function er_check_all_sd() {
+    kgp -n monitoring -l 'app=event-router' -oname | xargs -L 1 -I {} sh -c 'kubectl exec -n monitoring {} -c event-router -- curl -I -s -k -H "Content-Type: application/json" -H "Authorization: Basic ${SDAUTH}" https://servicedesk.eng.vmware.com/rest/servicedeskapi/servicedesk' ''
+}
+
+## Check access to JIRA
+function er_check_all_jira() {
+    kgp -n monitoring -l 'app=event-router' -oname | xargs -L 1 -I {} kubectl exec -n monitoring {} -c event-router -- curl -I -s -k -H "Content-Type: application/json" -H "Authorization: Basic ${SDAUTH}" https://jira.eng.vmware.com/rest/api/latest/issue/VDPENG-15300
+}
+
+## Check access to ServiceDesk - specific resource
+function er_check_sd {
+    kgp -n monitoring "$1" -oname | xargs -I {} kubectl exec -n monitoring {} -c event-router -- curl -I -s -k -H "Content-Type: application/json" -H "Authorization: Basic ${SDAUTH}" https://servicedesk.eng.vmware.com/rest/servicedeskapi/servicedesk
+}
+
+## Check access to JIRA - specific resource
+function er_check_jira (){ 
+    kgp -n monitoring "$@" -oname | xargs -I {} kubectl exec -n monitoring {} -c event-router -- curl -I -s -k -H "Content-Type: application/json" -H "Authorization: Basic ${SDAUTH}" https://jira.eng.vmware.com/rest/api/latest/issue/VDPENG-15300
+}
+
+## Find error in logs
+function er_find_error (){ 
+    stern er-event-router -n monitoring --since 2h --no-follow --only-log-lines | grep "$1"
+}
+
+# ----------------------------------------------------------
+
+# SSL
+
+## ssl cert check
+function ssl_cert_check () {
+    kgsec $1 -n $2 -o jsonpath="{.data.$3}" | base64 -d | openssl x509 -text -noout | grep -E "Subject:|Not After" 
+}

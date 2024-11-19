@@ -1,0 +1,105 @@
+# vim:set filetype=gitconfig:
+[init]
+  defaultBranch = main
+[user]
+  email = ${EMAIL}
+  name = ${NAME}
+[pull]
+  rebase = false
+[push]
+  default = simple
+  autoSetupRemote = true
+[fetch]
+  prune = true
+  # pruneTags = true
+[log]
+  date = relative
+[format]
+  pretty = format:%C(auto,yellow)%h%C(auto,magenta)% G? %C(auto,blue)%>(12,trunc)%ad %C(auto,green)%<(7,trunc)%aN%C(auto,reset)%s%C(auto,red)% gD% D
+[alias]
+  switch = !legit switch
+  branches = !legit branches
+  graft = !legit graft
+  harvest = !legit harvest
+  publish = !legit publish
+  unpublish = !legit unpublish
+  sprout = !legit sprout
+  sync = !legit sync
+  resync = !legit resync
+  findtag = rev-list -n 1
+  findbranch = branch -a --contains
+  findtagbranch = "!git findbranch `git findtag`"
+  cleanup = "!git clean -fdX && git for-each-ref --format '%(refname:short)' refs/heads | grep -Ev 'master|main' | xargs -r git branch -D"
+  remove-untacked = "!git sb | grep '??' | awk '{print $2}' | xargs rm -rf"
+  accept-ours = "!f() { git checkout --ours -- \"${@:-.}\"; git add -u \"${@:-.}\"; }; f"
+  accept-theirs = "!f() { git checkout --theirs -- \"${@:-.}\"; git add -u \"${@:-.}\"; }; f"
+  unstage = reset --
+  uncommit = reset --soft HEAD^
+  patch = !git --no-pager diff
+  amend = commit --amend --no-edit --signoff
+  edit = commit --amend --signoff
+  force = push --force-with-lease
+  desc = describe --always --tags
+  df = diff
+  sb = status -sb
+  st = status -sb
+  info = remote show origin
+  history = log --color --all --date-order --decorate --dirstat=lines,cumulative --stat
+  lg1 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all
+  lg2 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all
+  lg = "!git lg1"
+  vomit = commit
+  piss = push
+  pill = pull
+[core]
+  # pager = less -RF -X
+  pager = delta
+  editor = vim #nvim
+  excludesfile = ~/.gitexcludes
+[interactive]
+  diffFilter = delta --color-only
+[delta]
+  navigate = true    # use n and N to move between diff sections
+  light = false      # set to true if you're in a terminal w/ a light background color (e.g. the default macOS terminal)
+  side-by-side = true
+  line-numbers = true
+  tabs = 2
+  file-style = box
+  hyperlinks = true
+  hyperlinks-file-link-format = "file-line://{path}:{line}"
+[merge]
+  conflictstyle = diff3
+[diff]
+  colorMoved = default
+# [pager]
+#   # diff = diff-so-fancy | less --tabs=2 -RFX --pattern '^(Date|added|deleted|modified): '
+#   diff = diff-so-fancy | less --tabs=2 -RFX
+#   show = diff-so-fancy | less --tabs=2 -RFX
+# [diff-so-fancy]
+#   markEmptyLines = true
+#   changeHunkIndicators = true
+#   stripLeadingSymbols = true
+#   useUnicodeRuler = true
+[color]
+  ui = true
+# [color "diff-highlight"]
+#   oldNormal = red bold
+#   oldHighlight = red bold 52
+#   newNormal = green bold
+#   newHighlight = green bold 22
+# [color "diff"]
+#   meta = yellow
+#   frag = magenta bold
+#   commit = yellow bold
+#   old = red bold
+#   new = green bold
+#   whitespace = red reverse
+
+[credential]
+  helper = manager-core
+
+[url "git@github.com:"]
+  insteadOf = https://github.com/
+
+[include]
+  path = .gitconfigExtra

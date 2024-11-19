@@ -1,0 +1,127 @@
+# vim:set filetype=bash:
+# helix:set-language bash:
+
+## Git
+alias gs="git status"
+alias gc="git commit"
+alias gca="git commit --amend"
+alias gcan="git commit --amend --no-edit"
+alias gr="git restore"
+alias gpmr="git pmr"
+alias gpr="git pr"
+alias gp="git pull --rebase"
+alias gsw="git switch"
+alias gl="git log"
+alias gb="git branch"
+alias gbsu="git branch --set-upstream-to=origin/master"
+alias gbsuc='git branch --set-upstream-to=origin/master $(git branch --show-current)'
+alias gco="git checkout"
+alias gcob="git checkout -b"
+alias gsts="git stash"
+alias gpop="git stash pop"
+
+## inherited
+
+function git-main_branch() {
+  if [ ! -f ".git/refs/remotes/origin/HEAD" ]; then
+    git remote set-head origin --auto &> /dev/null
+  fi
+  git branch -rl "*/HEAD" | rev | cut -d/ -f1 | rev
+}
+
+function git-status() {
+  UNCOMMITED=$(git status -s)
+  LOCAL=$(git rev-parse @)
+  REMOTE=$(git rev-parse @{u})
+  BASE=$(git merge-base @ @{u})
+
+  if [ "$UNCOMMITED" != "" ]; then
+    echo "Need to commit"
+  elif [ $LOCAL = $REMOTE ]; then
+    echo "Up-to-date"
+  elif [ $LOCAL = $BASE ]; then
+    echo "Need to pull"
+  elif [ $REMOTE = $BASE ]; then
+    echo "Need to push"
+  else
+    echo "Diverged"
+  fi
+}
+
+function gch() {
+ git checkout "$(git branch — all | fzf| tr -d '[:space:]')"
+}
+
+function git-compare() {
+  git rev-list --left-right --count $1...$2
+}
+
+function git-branch-status() {
+  git for-each-ref --format="%(refname:short) %(upstream:short)" refs/heads | \
+  while read local remote
+  do
+    [ -z "$remote" ] && continue
+    git rev-list --left-right ${local}...${remote} -- 2>/dev/null >/tmp/git_upstream_status_delta || continue
+    LEFT_AHEAD=$(grep -c '^<' /tmp/git_upstream_status_delta)
+    RIGHT_AHEAD=$(grep -c '^>' /tmp/git_upstream_status_delta)
+    echo "$local (ahead $LEFT_AHEAD) | (behind $RIGHT_AHEAD) $remote"
+  done
+}
+
+# Merges current branch with the specified branch
+function git-merge() {
+  CUR_BRANCH=$(basename $(git symbolic-ref -q HEAD))
+  SRC_BRANCH=${1:-"master"}
+  git pull && git checkout ${SRC_BRANCH} && git pull && git checkout ${CUR_BRANCH} && git pull && git merge ${SRC_BRANCH}
+}
+
+# Git aliases
+alias git-pull-recursive='git recursive pull'
+alias git-pull-all='git recursive pull'
+alias git-clean-all='git recursive clean'
+alias git-logbranches='git for-each-ref --sort=-committerdate refs/heads/ --format="%(color:red)%(refname:short)%(color:reset)   %(subject)"'
+alias git-unpushed-commits='git for-each-ref --format="%(push:track)" refs/heads'
+alias git-prune-branches='git remote prune origin'
+alias git-prune-merged='git branch -r --merged | grep -vE "master|main" | sed '\''s/origin\///'\'' | xargs -n 1 -r git push --delete origin'
+alias git-purge-branches='git fetch --all -p; git branch -vv | grep "\[.*: gone\]" | awk '\''{ print $1 }'\'' | xargs -n 1 -r git branch -d'
+alias git-current-tag='git name-rev --tags --name-only $(git rev-parse HEAD)'
+alias git-reset='git fetch origin; git reset --hard $(git remote | head -1)/$(git name-rev --name-only HEAD); git clean -fdx'
+alias git-tags='git for-each-ref --format "%(refname) %09 %(taggerdate) %(subject) %(taggeremail)" refs/tags  --sort=taggerdate'
+# change the current directory to the parent directory that contains the .git folder
+alias git-root='cd "`git rev-parse --show-toplevel`"'
+
+alias gcl='git goclone -u'
+alias gd='git diff'
+alias gdst='git diff --stat'
+alias gdm='git diff $(git-main_branch)'
+alias gdms='git diff $(git-main_branch) --stat'
+alias gpl='git pull'
+alias gph='git push'
+alias gcm='git checkout $(git-main_branch)'
+alias gco='git checkout'
+alias gcom='git checkout $(git-main_branch)'
+alias grbm='git rebase $(git-main_branch)'
+alias grbr='git rebase --root'
+alias gaf='git amend . && git force'
+alias gtn='git tag $(svu next)'
+alias gpnt='git tag $(svu next) && git push --tags'
+alias gcpt='git cherry-pick --strategy-option=theirs'
+alias gcpo='git cherry-pick --strategy-option=ours'
+alias grp='git recursive pull'
+alias ggc='git gc --prune=all'
+alias grgc='git recursive gc'
+alias gstaku='git stash push -ku'
+
+alias masterDiff='git diff $(git merge-base --fork-point master)'
+alias latestTag='git describe --tags `git rev-list --tags --max-count=1`'
+alias latestTagDiff='git show --name-only `git describe --tags` `git rev-list --tags --max-count=1`..'
+
+alias standup='cd code/; git standup -L -m4 -d3; back'
+
+# if [ -x "$(command -v lab)" ]; then
+#   alias git=lab
+# elif [ -x "$(command -v hub)" ]; then
+#   alias git=hub
+# fi
+
+alias prs='gh dash'
