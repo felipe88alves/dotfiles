@@ -139,8 +139,6 @@ installZshConf() {
   cp files/shell/zsh/zshrc "${HOME}/.zshrc"
   cp files/shell/zsh/zshHighlightStyle "${HOME}/.zshrcHighlightStyle"
   cp files/shell/zsh/p10k.zsh "${HOME}/.p10k.zsh"
-
-  source ~/.zshrc
 }
 
 installDotFiles() {
@@ -194,4 +192,5 @@ case "$CMD" in
   ;;
 esac
 
+source ~/.zshrc
 echo "bootstrap successful!"
