@@ -7,18 +7,20 @@ alias gc="git commit"
 alias gcm="git commit -m"
 alias gca="git commit --amend"
 alias gcan="git commit --amend --no-edit"
-alias gr="git restore"
-alias gpmr="git pmr"
-alias gpr="git pr"
-alias gp="git pull --rebase"
-alias gps='git push'
-alias gsw="git switch"
-alias gl="git log"
 alias gb="git branch"
 alias gbsu="git branch --set-upstream-to=origin/master"
 alias gbsuc='git branch --set-upstream-to=origin/master $(git branch --show-current)'
 alias gco="git checkout"
 alias gcob="git checkout -b"
+alias gd='git diff'
+alias gd='git diff --staged'
+alias gl="git log"
+alias gp="git pull --rebase"
+alias gpmr="git pmr"
+alias gpr="git pr"
+alias gps='git push'
+alias gsw="git switch"
+alias gr="git restore"
 alias gsts="git stash"
 alias gpop="git stash pop"
 
@@ -93,7 +95,6 @@ alias git-tags='git for-each-ref --format "%(refname) %09 %(taggerdate) %(subjec
 alias git-root='cd "`git rev-parse --show-toplevel`"'
 
 alias gcl='git goclone -u'
-alias gd='git diff'
 alias gdst='git diff --stat'
 alias gdm='git diff $(git-main_branch)'
 alias gdms='git diff $(git-main_branch) --stat'

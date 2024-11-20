@@ -30,6 +30,8 @@ installPackages() {
   sudo apt upgrade -y
 }
 
+echo "Ubuntu Installer"
+
 case "$1" in
   "packages" | "pkgs")
     installPackages

@@ -10,21 +10,13 @@ CMD="${1:-all}"
 shift || true
 ARGS=("${@}")
 
+# shellcheck source=./lib.sh
 source "${dotfiles_dir}/lib.sh"
 
 installGoPkgs() {
   # goinstall "${PKG}"
+  source "${dotfiles_dir}/files/scripts/golang"
   installPkgList "go install" <(sed 's|$|@latest|g' files/pkgs/go.lst)
-  cleanGoPkgs
-}
-
-cleanGoPkgs() {
-  go clean -modcache
-  rm -rf "${HOME}/.glide/"*
-  rm -rf "${GOPATH/:*/}/src/"*
-  rm -rf "${GOPATH/:*/}/pkg/"*
-  rm -rf "${GOPATH/:*/}/.cache"
-  rm -rf "${HOME}/.cache/go-build/"
 }
 
 installVscodeConfig() {
@@ -181,6 +173,9 @@ elif isFunction "install${CMD}"; then
 fi
 
 case "$CMD" in
+"ospkgs")
+  installOSSpecific pkgs
+  ;;
 "alias")
   configAliases
   ;;

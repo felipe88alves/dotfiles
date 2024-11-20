@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# set -euo pipefail
+set -xeuo pipefail
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
   echo 'Looks like you are on OS X'
@@ -15,9 +15,6 @@ fi
 
 dotfiles_dir="${dotfiles_dir:-$(dirname "$0")}"
 INSTALLDIR=$(pwd)
-
-# shellcheck source=./lib.sh
-source "${dotfiles_dir}/lib.sh"
 
 detectRelease() {
   if [ -f /etc/os-release ]; then
@@ -83,9 +80,9 @@ installPackages() {
   #   installHashicorp terraform
   #   installTerragrunt
   # fi
-  if ! [ -x "$(command -v kubectl)" ]; then
-    installKubernetes
-  fi
+  # if ! [ -x "$(command -v kubectl)" ]; then
+  #   installKubernetes
+  # fi
 }
 
 installFonts() {
@@ -127,6 +124,8 @@ case "$1" in
   detectRelease
   ;;
 *)
-  installAll
+  if [[ -z "${1:-}" || ${1:-} == "all" ]]; then
+    installAll
+  fi
   ;;
 esac

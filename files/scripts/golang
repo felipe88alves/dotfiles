@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+GOVERSION=1.23.3
+OS="$(uname -s | tr '[:upper:]' '[:lower:]')"
+ARCH="$(uname -m | sed -e 's/x86_64/amd64/' -e 's/\(arm\)\(64\)\?.*/\1\2/' -e 's/aarch64$/arm64/')"
+
+GOBIN="/usr/local/go/bin"
+
+if [[ ! -f ${GOBIN} ]]; then
+    INSTALLED_GO_VERSION="$(${GOBIN}/go version | { read _ _ v _; echo ${v#go}; })" || false
+    if [[ ${INSTALLED_GO_VERSION:-} != ${GOVERSION} ]]; then
+        rm -rf /usr/local/go
+        curl -OL https://golang.org/dl/go${GOVERSION}.${OS}-${ARCH}.tar.gz
+        sudo tar -C /usr/local -xf go${GOVERSION}.${OS}-${ARCH}.tar.gz
+        rm go${GOVERSION}.${OS}-${ARCH}.tar.gz
+    fi
+    GOPATH="/usr/local/go"
+    GOBIN="${GOPATH/:*}/bin"
+    PATH="${PATH}:${GOBIN}"
+fi

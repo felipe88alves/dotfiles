@@ -2,8 +2,6 @@ github.com/axw/gocov/gocov
 github.com/go-delve/delve/cmd/dlv
 github.com/princjef/gomarkdoc/cmd/gomarkdoc
 github.com/spf13/cobra-cli
-github.com/spf13/viper
-golang.org/x/lint
 golang.org/x/tools/...
 sigs.k8s.io/controller-tools/cmd/controller-gen
 sigs.k8s.io/kind

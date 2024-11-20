@@ -4,6 +4,7 @@ curl
 python3-pip
 neovim
 colordiff
+gh
 
 #tmux
 #jq

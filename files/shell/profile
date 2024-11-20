@@ -8,10 +8,6 @@
 # for ssh logins, install and configure the libpam-umask package.
 #umask 022
 
-if [[ "${CONFIGURED:-}" == "true" ]]; then
-  return
-fi
-
 if [[ -z "$USER" ]]; then
   USER="$(whoami)"
 fi
@@ -38,3 +34,8 @@ fi
 if [ -d "$HOME/.local/bin" ] ; then
     PATH="$HOME/.local/bin:$PATH"
 fi
+
+# GOPATH
+GOPATH="/usr/local/go"
+GOBIN="${GOPATH/:*}/bin"
+PATH="${PATH}:${GOBIN}"
