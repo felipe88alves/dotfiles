@@ -194,5 +194,5 @@ case "$CMD" in
   ;;
 esac
 
-source ~/.zshrc
 echo "bootstrap successful!"
+exec zsh
