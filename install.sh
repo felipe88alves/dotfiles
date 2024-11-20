@@ -66,6 +66,17 @@ installShellConf() {
   cp files/shell/variables "${HOME}/.variables"
   cp files/shell/profile "${HOME}/.profile"
   
+  configAliases
+
+  installBashConf
+  installZshConf
+  # installTmuxConf
+  installGitConf
+
+  source "${HOME}/.profile"
+}
+
+configAliases() {
   mkdir -p "${HOME}/.aliases.d"
   cp -r files/shell/aliases.d/* "${HOME}/.aliases.d"
 
@@ -82,13 +93,7 @@ installShellConf() {
     sedcmd+="${sc}"
   done
   cat files/shell/aliases | sed -e "${sedcmd}" > "${HOME}"/.aliases
-
-  installBashConf
-  installZshConf
-  # installTmuxConf
-  installGitConf
-
-  source "${HOME}/.profile"
+  source "${HOME}"/.aliases
 }
 
 installBashConf() {
@@ -176,6 +181,9 @@ elif isFunction "install${CMD}"; then
 fi
 
 case "$CMD" in
+"alias")
+  configAliases
+  ;;
 "go" | "gopkgs")
   installGoPkgs
   ;;
@@ -190,9 +198,9 @@ case "$CMD" in
   installOSSpecific "${CMD}" "${ARGS[@]}"
   if [[ -z "${CMD}" || ${CMD} == "all" ]]; then
     installAll
+    exec zsh
   fi
   ;;
 esac
 
 echo "bootstrap successful!"
-exec zsh
