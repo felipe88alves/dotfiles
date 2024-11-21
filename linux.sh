@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -xeuo pipefail
+set -euo pipefail
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
   echo 'Looks like you are on OS X'

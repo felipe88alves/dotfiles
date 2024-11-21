@@ -13,7 +13,7 @@ alias gbsuc='git branch --set-upstream-to=origin/master $(git branch --show-curr
 alias gco="git checkout"
 alias gcob="git checkout -b"
 alias gd='git diff'
-alias gd='git diff --staged'
+alias gds='git diff --staged'
 alias gl="git log"
 alias gp="git pull --rebase"
 alias gpmr="git pmr"

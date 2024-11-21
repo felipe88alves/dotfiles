@@ -2,14 +2,19 @@ aptitude
 build-essential
 curl
 python3-pip
+pipx
 neovim
 colordiff
 gh
+tree
+fzf
+net-tools
+parted
+unrar
+unzip
 
 #tmux
 #jq
-#unrar
-#unzip
 #linux-image-generic
 
 ## Terminal
