@@ -25,7 +25,7 @@ installVscodeConfig() {
     settings="$HOME/Library/Application Support/Code/User"
   fi
   mkdir -p "$settings"
-  cp -r files/vscode/* "$settings/"
+  cp -r files/config/vscode/* "$settings/"
 }
 
 installVscodePackages() {
