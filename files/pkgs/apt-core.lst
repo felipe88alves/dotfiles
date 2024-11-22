@@ -12,6 +12,7 @@ net-tools
 parted
 unrar
 unzip
+ssh-askpass
 
 #tmux
 #jq

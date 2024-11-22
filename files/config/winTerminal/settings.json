@@ -4,18 +4,6 @@
     "actions": 
     [
         {
-            "command": "unbound",
-            "keys": "alt+shift+minus"
-        },
-        {
-            "command": "unbound",
-            "keys": "alt+shift+plus"
-        },
-        {
-            "command": "unbound",
-            "keys": "ctrl+shift+w"
-        },
-        {
             "command": 
             {
                 "action": "copy",
@@ -25,9 +13,61 @@
             "keys": "ctrl+c"
         },
         {
+            "command": "unbound",
+            "keys": "alt+shift+d"
+        },
+        {
+            "command": "unbound",
+            "keys": "alt+shift+minus"
+        },
+        {
+            "command": "unbound",
+            "keys": "alt+shift+plus"
+        },
+        {
+            "command": "unbound",
+            "keys": "ctrl+shift+f"
+        },
+        {
+            "command": "unbound",
+            "keys": "ctrl+shift+d"
+        },
+        {
+            "command": "unbound",
+            "keys": "ctrl+shift+w"
+        },
+        {
+            "command": "unbound",
+            "keys": "ctrl+d"
+        },
+        {
+            "command": "unbound",
+            "keys": "ctrl+s"
+        },
+        {
             "command": "paste",
             "id": "User.paste",
             "keys": "ctrl+v"
+        },
+        {
+            "command": "duplicateTab",
+            "id": "User.duplicateTab",
+            "keys": "ctrl+n"
+        },
+        {
+            "command": "find",
+            "id": "User.find",
+            "keys": "ctrl+f"
+        },
+        {
+            "command": 
+            {
+                "action": "splitPane",
+                "split": "down",
+                "splitMode": "duplicate"
+            },
+            "id": "User.splitPane.10B260D2",
+            "keys": "alt+d"
         },
         {
             "command": 
@@ -42,30 +82,16 @@
             "command": 
             {
                 "action": "splitPane",
-                "split": "down",
-                "splitMode": "duplicate"
-            },
-            "id": "User.splitPane.10B260D2",
-            "keys": "alt+shift+d"
-        },
-        {
-            "command": "find",
-            "id": "User.find",
-            "keys": "ctrl+shift+f"
-        },
-        {
-            "command": "closePane",
-            "keys": "alt+shift+w"
-        },
-        {
-            "command": 
-            {
-                "action": "splitPane",
                 "split": "right",
                 "splitMode": "duplicate"
             },
             "id": "User.splitPane.FEF0D40B",
-            "keys": "alt+shift+s"
+            "keys": "alt+s"
+        },
+        {
+            "command": "closePane",
+            "id": "User.closePane",
+            "keys": "ctrl+w"
         }
     ],
     "copyFormatting": "none",
@@ -101,21 +127,16 @@
                 "source": "Windows.Terminal.Azure"
             },
             {
-                "font": 
-                {
-                    "face": "MesloLGS NF"
-                },
-                "guid": "{51855cb2-8cce-5362-8f54-464b92b32386}",
-                "hidden": false,
-                "name": "Ubuntu",
-                "source": "CanonicalGroupLimited.Ubuntu_79rhkp1fndgsc",
-                "startingDirectory": "./"
-            },
-            {
                 "guid": "{2c4de342-38b7-51cf-b940-2309a097f518}",
                 "hidden": true,
                 "name": "Ubuntu",
                 "source": "Windows.Terminal.Wsl"
+            },
+            {
+                "guid": "{51855cb2-8cce-5362-8f54-464b92b32386}",
+                "hidden": false,
+                "name": "Ubuntu",
+                "source": "CanonicalGroupLimited.Ubuntu_79rhkp1fndgsc"
             }
         ]
     },
