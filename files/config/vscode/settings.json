@@ -35,11 +35,12 @@
     "window.zoomLevel": 0,
     "workbench.colorTheme": "GitHub Dark",
     "vsicons.dontShowNewVersionMessage": true,
-    "vim.neovimPath": "/opt/homebrew/bin/nvim",
-    "vim.enableNeovim": true,
     "vim.useSystemClipboard": true,
     "vim.handleKeys": {
-        "<C-p>": false
+        "<C-p>": false,
+        "<C-a>": false,
+        "<C-f>": false,
+        "<C-c>": false
     },
     "vs-kubernetes": {
         "vs-kubernetes.kubectl-path.mac": "/Users/l0d01f4/.vs-kubernetes/tools/kubectl/kubectl",

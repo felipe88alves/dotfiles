@@ -14,7 +14,6 @@ ARGS=("${@}")
 source "${dotfiles_dir}/lib.sh"
 
 installGoPkgs() {
-  # goinstall "${PKG}"
   source "${dotfiles_dir}/files/scripts/golang"
   installPkgList "go install" <(sed 's|$|@latest|g' files/pkgs/go.lst)
 }
@@ -145,7 +144,7 @@ installDotFiles() {
 }
 
 installPackages() {
-  # installGoPkgs
+  installGoPkgs
   installVscodePackages
 }
 
