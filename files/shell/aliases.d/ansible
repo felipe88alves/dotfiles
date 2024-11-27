@@ -1,0 +1,8 @@
+# Ansible
+alias ans="ansible"
+alias ans-cfg="ansible-config"
+alias ans-doc="ansible-doc"
+alias ans-gal="ansible-galaxy"
+alias ans-plb="ansible-playbook"
+alias ans-inv="ansible-inventory"
+alias ans-cns="ansible-console"

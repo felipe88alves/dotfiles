@@ -13,6 +13,8 @@ parted
 unrar
 unzip
 ssh-askpass
+sshpass
+nmap
 
 #tmux
 #jq
@@ -25,6 +27,3 @@ zsh
 
 ## GIT
 git
-
-## Automation
-ansible

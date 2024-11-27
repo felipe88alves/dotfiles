@@ -23,9 +23,9 @@ installPackages() {
   cat files/pkgs/apt-core.lst | grep -v '^$\|^\s*\#' | tr '\n' ' ' | xargs sudo apt install -y
   sudo apt-mark manual $(cat files/pkgs/apt-core.lst | grep -v '^$\|^\s*\#' | tr '\n' ' ')
 
-  # if ! [ -x "$(command -v docker)" ]; then
-  #   installDocker
-  # fi
+  if [[  -z "${WSL:-}" ]] && [[ "${WSL:-}" != "true" ]] && ! [ -x "$(command -v docker)" ]; then
+    installDocker
+  fi
 
   sudo apt upgrade -y
 }

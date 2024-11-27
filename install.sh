@@ -18,6 +18,11 @@ installGoPkgs() {
   installPkgList "go install" <(sed 's|$|@latest|g' files/pkgs/go.lst)
 }
 
+installPips() {
+  installPkgList "pipx install --include-deps" files/pkgs/pip.lst
+  pipx upgrade-all
+}
+
 installVscodeConfig() {
   settings="$HOME/.config/Code/User"
   if [[ $OSTYPE == "darwin"* ]]; then
@@ -146,6 +151,7 @@ installDotFiles() {
 installPackages() {
   installGoPkgs
   installVscodePackages
+  installPips
 }
 
 installOSSpecific() {
@@ -177,6 +183,9 @@ case "$CMD" in
   ;;
 "alias")
   configAliases
+  ;;
+"pip")
+  installPips
   ;;
 "go" | "gopkgs")
   installGoPkgs
