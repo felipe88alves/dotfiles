@@ -216,7 +216,4 @@ alias -s {yml,yaml,json}=$EDITOR
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 [[ ! -f ~/.aliases ]] || source ~/.aliases
 
-pipx ensurepath
-sudo pipx ensurepath --global # optional to allow pipx actions with --global argument
-
 export CONFIGURED="true"
