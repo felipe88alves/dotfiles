@@ -137,20 +137,20 @@ plugins=(
   zsh-history-substring-search
 )
 
-if [[ -x "$(command -v zellij)" ]] && [[ "${ZELLIJ_AUTOSTART}" == "true" ]] ; then
-  if [ -f "${HOME}/.config/zellij/config.kdl" ]; then
-    export ZELLIJ_CONFIG_DIR="${HOME}/.config/zellij/config.kdl"
-  fi
-  eval "$(zellij setup --generate-auto-start zsh)"
-else
-  # Tmux plugin config
-  export ZSH_TMUX_AUTOSTART=false
-  export ZSH_TMUX_AUTOSTART_ONCE=false
-  export ZSH_TMUX_AUTOQUIT=true
-  export ZSH_TMUX_AUTOCONNECT=false
+# if [[ -x "$(command -v zellij)" ]] && [[ "${ZELLIJ_AUTOSTART}" == "true" ]] ; then
+#   if [ -f "${HOME}/.config/zellij/config.kdl" ]; then
+#     export ZELLIJ_CONFIG_DIR="${HOME}/.config/zellij/config.kdl"
+#   fi
+#   eval "$(zellij setup --generate-auto-start zsh)"
+# else
+#   # Tmux plugin config
+#   export ZSH_TMUX_AUTOSTART=false
+#   export ZSH_TMUX_AUTOSTART_ONCE=false
+#   export ZSH_TMUX_AUTOQUIT=true
+#   export ZSH_TMUX_AUTOCONNECT=false
 
-  plugins[1,0]=(tmux)
-fi
+#   plugins[1,0]=(tmux)
+# fi
 
 # Bash like CDPATH
 typeset -U path cdpath fpath

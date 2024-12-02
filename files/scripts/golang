@@ -2,24 +2,31 @@
 set -x
 
 GOVERSION=1.23.3
+
 OS="$(uname -s | tr '[:upper:]' '[:lower:]')"
 ARCH="$(uname -m | sed -e 's/x86_64/amd64/' -e 's/\(arm\)\(64\)\?.*/\1\2/' -e 's/aarch64$/arm64/')"
-GOPATH="${HOME}/go"
-GOBIN="${GOPATH/:*}/bin"
+GOROOT="${HOME}/go"
+GOPATH="${GOROOT/:*}/bin"
+GOBIN="${GOROOT/:*}/bin"
 
 _installGo() {
     curl -OL https://golang.org/dl/go${GOVERSION}.${OS}-${ARCH}.tar.gz
-    sudo tar -C /usr/local -xf go${GOVERSION}.${OS}-${ARCH}.tar.gz
-    sudo mkdir -p /usr/local/go/pkg/mod
+    tar -C ${HOME}/ -xf go${GOVERSION}.${OS}-${ARCH}.tar.gz
+    mkdir -p ${HOME}/go/pkg/mod
     rm go${GOVERSION}.${OS}-${ARCH}.tar.gz
-    PATH="${PATH}:${GOBIN}"
+
+    echo '# GOPATH' >> ${HOME}/.profile
+    echo 'GOPATH="${HOME}/go"' >> ${HOME}/.profile
+    echo 'GOBIN="${GOPATH/:*}/bin"' >> ${HOME}/.profile
+    echo 'PATH="${PATH}:${GOBIN}"' >> ${HOME}/.profile
+    source ${HOME}/.profile
 }
 
 
 if [[ -d ${GOBIN} ]]; then
     INSTALLED_GO_VERSION="$(${GOBIN}/go version | { read _ _ v _; echo ${v#go}; })" || false
     if [[ ${INSTALLED_GO_VERSION:-} != ${GOVERSION} ]]; then
-        rm -rf /usr/local/go
+        rm -rf ${HOME}/go
         _installGo
     fi
 else

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -eo pipefail
 
 OS="$(uname -s | tr '[:upper:]' '[:lower:]')"
 ARCH="$(uname -m | sed -e 's/x86_64/amd64/' -e 's/\(arm\)\(64\)\?.*/\1\2/' -e 's/aarch64$/arm64/')"
@@ -8,7 +8,7 @@ dotfiles_dir="$(dirname "$0")"
 
 CMD="${1:-all}"
 shift || true
-ARGS=("${@}")
+ARGS=("$@")
 
 # shellcheck source=./lib.sh
 source "${dotfiles_dir}/lib.sh"
@@ -163,10 +163,11 @@ installOSSpecific() {
 }
 
 installAll() {
+  installDotFiles
   if [[ $OSTYPE != *"android"* ]]; then
     installPackages
   fi
-  installDotFiles
+
 }
 
 if isFunction "${CMD}"; then

@@ -35,7 +35,3 @@ if ! [[ ":$PATH:" == *":$HOME/.local/bin:"* ]] && [ -d "$HOME/.local/bin" ]; the
     PATH="$HOME/.local/bin:$PATH"
 fi
 
-# GOPATH
-GOPATH="/usr/local/go"
-GOBIN="${GOPATH/:*}/bin"
-PATH="${PATH}:${GOBIN}"

@@ -7,7 +7,11 @@ alias dv="docker volume"
 alias dvls="docker volume ls"
 alias dex="docker exec -it"
 alias drmi="docker rmi"
-alias drmia="docker rmi -f $(docker images -aq)"
+
 alias dstop="docker stop"
 alias drm="docker remove"
 alias dcp="docker container prune"
+
+function drmia(){
+    docker rmi -f $(docker images -aq)
+}
