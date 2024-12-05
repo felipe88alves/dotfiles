@@ -191,7 +191,6 @@ installPackages() {
 
   fancy_echo "Cleaning old Homebrew formulae ..."
   brew cleanup
-  brew cask cleanup
 }
 
 installItermColors() {
