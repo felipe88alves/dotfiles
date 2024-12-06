@@ -39,7 +39,7 @@ cask_install() {
     fancy_echo "$1 is already installed!"
   else
     fancy_echo "Installing $1 ..."
-    brew install --cask "${@}" --appdir=/Applications
+    brew install --cask --force "${@}" --appdir=/Applications
   fi
 }
 
@@ -170,7 +170,7 @@ installPackages() {
 
   # Install brew pkgs
   installPkgList "brew_install_or_upgrade" files/pkgs/brew.lst
-  grep -Ev '\s*#' files/pkgs/brew.lst | tr '\n' '\0' | xargs -0 -n1 brew install
+  # grep -Ev '\s*#' files/pkgs/brew.lst | tr '\n' '\0' | xargs -0 -n1 brew install
 
   # Install cask pkgs
   brew_install_or_upgrade cask
@@ -187,7 +187,7 @@ installPackages() {
   # chsh -s $(brew --prefix)/bin/bash
 
   # gettext is installed as a dependency but it's not linked
-  brew link gettext --force
+  brew unlink gettext -q && brew link gettext
 
   fancy_echo "Cleaning old Homebrew formulae ..."
   brew cleanup

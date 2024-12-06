@@ -14,12 +14,6 @@ _installGo() {
     tar -C ${HOME}/ -xf go${GOVERSION}.${OS}-${ARCH}.tar.gz
     mkdir -p ${HOME}/go/pkg/mod
     rm go${GOVERSION}.${OS}-${ARCH}.tar.gz
-
-    echo '# GOPATH' >> ${HOME}/.profile
-    echo 'GOPATH="${HOME}/go"' >> ${HOME}/.profile
-    echo 'GOBIN="${GOPATH/:*}/bin"' >> ${HOME}/.profile
-    echo 'PATH="${PATH}:${GOBIN}"' >> ${HOME}/.profile
-    source ${HOME}/.profile
 }
 
 

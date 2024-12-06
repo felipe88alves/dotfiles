@@ -15,7 +15,7 @@ source "${dotfiles_dir}/lib.sh"
 
 installGoPkgs() {
   source "${dotfiles_dir}/files/scripts/golang"
-  installPkgList "go install" <(sed 's|$|@latest|g' files/pkgs/go.lst)
+  installPkgList "${HOME}/go/bin/go install" <(sed 's|$|@latest|g' files/pkgs/go.lst)
 }
 
 installPips() {
@@ -140,8 +140,6 @@ installZshConf() {
   cp files/shell/zsh/zshrc "${HOME}/.zshrc"
   cp files/shell/zsh/zshHighlightStyle "${HOME}/.zshrcHighlightStyle"
   cp files/shell/zsh/p10k.zsh "${HOME}/.p10k.zsh"
-
-  chsh -s $(which zsh)
 }
 
 installDotFiles() {
@@ -167,7 +165,6 @@ installAll() {
   if [[ $OSTYPE != *"android"* ]]; then
     installPackages
   fi
-
 }
 
 if isFunction "${CMD}"; then
@@ -202,7 +199,14 @@ case "$CMD" in
   installOSSpecific "${CMD}" "${ARGS[@]}"
   if [[ -z "${CMD}" || ${CMD} == "all" ]]; then
     installAll
-    exec zsh
+
+
+    echo 'Start zsh? (y)'
+    read -t 10 uservar
+    if [[ "${uservar}" == "y" ]];then
+      chsh -s $(which zsh)
+      exec zsh
+    fi
   fi
   ;;
 esac
