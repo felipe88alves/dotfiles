@@ -1,7 +1,7 @@
 {
     "vim.disableAnnoyingNeovimMessage": true,
     "atomKeymap.promptV3Features": true,
-    "editor.multiCursorModifier": "ctrlCmd",
+    "editor.multiCursorModifier": "alt",
     "editor.formatOnPaste": true,
     "workbench.iconTheme": "file-icons",
     "editor.renderWhitespace": "all",

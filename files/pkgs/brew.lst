@@ -1,5 +1,7 @@
 fzf
+keyring
 kind
+krew
 kubectx
 python
 pipx
