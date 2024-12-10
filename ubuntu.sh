@@ -2,6 +2,19 @@
 set -euo pipefail
 
 installDocker() {
+  # # SOURCE: https://chrisjhart.com/TLDR-Docker-Ubuntu-2204/
+  # sudo apt-get -y install ca-certificates curl gnupg
+  # sudo install -m 0755 -d /etc/apt/keyrings
+  # curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+  # sudo chmod a+r /etc/apt/keyrings/docker.gpg
+  # echo "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" |  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+  # sudo apt-get -y update
+  # sudo apt-get -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+  # sudo usermod -aG docker $USER
+  # exec su -l $USER
+  # docker --version
+  # docker run hello-world
+
   # Don't run this as root as you'll not add your user to the docker group
   sudo apt update
   sudo apt install apt-transport-https ca-certificates software-properties-common curl
