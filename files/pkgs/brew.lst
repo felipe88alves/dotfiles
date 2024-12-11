@@ -1,7 +1,9 @@
 fzf
+helm
 keyring
 kind
 krew
 kubectx
 python
 pipx
+yq
