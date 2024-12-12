@@ -54,7 +54,7 @@ installGitConf() {
     printf -v sc 's|${%s}|%s|;' ${var} "${!var//\//\\/}"
     sedcmd+="${sc}"
   done
-  cat files/git/gitconfig | sed -e "${sedcmd}" >"${HOME}/.gitconfig"
+  cat files/git/gitconfig-personal | sed -e "${sedcmd}" >"${HOME}/.gitconfig-personal"
   cp files/git/gitexcludes "${HOME}/.gitexcludes"
 }
 
