@@ -56,6 +56,7 @@ installGitConf() {
   done
   cat files/git/gitconfig-personal | sed -e "${sedcmd}" >"${HOME}/.gitconfig-personal"
   cp files/git/gitexcludes "${HOME}/.gitexcludes"
+  cp files/git/gitconfig "${HOME}/.gitconfig"
 }
 
 installShellConf() {
