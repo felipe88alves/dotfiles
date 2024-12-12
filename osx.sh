@@ -160,6 +160,13 @@ installPackages() {
     exit 1
   fi
   # sudo spctl --master-disable
+
+  installBrewPkgs
+  installRosetta
+
+}
+
+installBrewPkgs() {
   installHomebrew
 
   # Add brew taps
@@ -191,6 +198,47 @@ installPackages() {
 
   fancy_echo "Cleaning old Homebrew formulae ..."
   brew cleanup
+
+}
+
+installRosetta() {
+  # Determine the architecture of the macOS device
+  processorBrand=$(/usr/sbin/sysctl -n machdep.cpu.brand_string)
+  if [[ "${processorBrand}" = *"Apple"* ]]; then
+      echo "Apple Processor is present."
+  else
+      echo "Apple Processor is not present. Rosetta not required."
+      return
+  fi
+
+  # Check if Rosetta is installed
+  checkRosettaStatus=$(/bin/launchctl list | /usr/bin/grep "com.apple.oahd-root-helper")
+  RosettaFolder="/Library/Apple/usr/share/rosetta"
+  if [[ -e "${RosettaFolder}" && "${checkRosettaStatus}" != "" ]]; then
+      echo "Rosetta Folder exists and Rosetta Service is running. Exiting..."
+      return
+  else
+      echo "Rosetta Folder does not exist or Rosetta service is not running. Installing Rosetta..."
+  fi
+
+  # Install Rosetta
+  /usr/sbin/softwareupdate --install-rosetta --agree-to-license
+
+  # Check the result of Rosetta install command
+  if [[ $? -eq 0 ]]; then
+      echo "Rosetta installed successfully."
+  else
+      echo "Rosetta installation failed."
+  fi
+
+  # Start colima docker profile with rosetta
+  colima start --cpu 6 --memory 16 --disk 40 --profile docker --arch aarch64 --vm-type=vz --vz-rosetta
+
+  colima stop --profile docker
+
+  echo "Run 'colima start --profile docker' to restart the VM."
+
+
 }
 
 installItermColors() {

@@ -1,3 +1,6 @@
+colima
+docker
+docker-buildx
 fzf
 helm
 keyring

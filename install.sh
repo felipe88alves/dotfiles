@@ -180,6 +180,9 @@ case "$CMD" in
 "ospkgs")
   installOSSpecific pkgs
   ;;
+"brew")
+  installOSSpecific brew
+  ;;
 "alias")
   configAliases
   ;;
