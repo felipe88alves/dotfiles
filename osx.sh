@@ -331,6 +331,9 @@ case "$1" in
 "fonts")
   installFonts
   ;;
+"iterm")
+  installIterm
+  ;;
 "itermcolors" | "termColors" | "termProfiles")
   installItermColors "${@:2}"
   ;;

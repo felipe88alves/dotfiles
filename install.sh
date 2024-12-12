@@ -15,7 +15,7 @@ source "${dotfiles_dir}/lib.sh"
 
 installGoPkgs() {
   source "${dotfiles_dir}/files/scripts/golang"
-  installPkgList "${HOME}/go/bin/go install" <(sed 's|$|@latest|g' files/pkgs/go.lst)
+  installPkgList "${HOME}/.local/go/bin/go install" <(sed 's|$|@latest|g' files/pkgs/go.lst)
 }
 
 installPips() {

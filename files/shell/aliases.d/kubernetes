@@ -4,7 +4,7 @@
 
 alias k="kubectl"
 alias kg="kubectl get"
-alias kga="kubectl api-resources --verbs=list --namespaced -o name | xargs -n 1 kubectl get --show-kind --ignore-not-found"
+alias kga="kubectl get all"
 alias kgp="kubectl get pods"
 alias kgpa="kubectl get pods -A"
 alias kgpo="kubectl get pods -oyaml"
@@ -25,7 +25,9 @@ alias kgsec="kubectl get secret"
 alias kgseco="kubectl get secret -oyaml"
 alias kgrs="kubectl get replicaset"
 alias kgo="kubectl get -oyaml"
-alias kgall="kubectl api-resources --verbs=list --namespaced='true' -o name | xargs -n 1 kubectl get --show-kind --ignore-not-found"
+alias kgall="kubectl api-resources --verbs=list -o name | xargs -n 1 kubectl get --show-kind --ignore-not-found"
+alias kapi="kubectl api-resources"
+alias kapiv="kubectl api-versions"
 
 alias kd="kubectl describe"
 alias kdp="kubectl describe pod"
@@ -54,7 +56,9 @@ alias kaf="kubectl apply -f"
 alias ka="kubectl apply"
 
 alias kct="kubectx"
+alias kctls="kubectx | cat"
 alias kns="kubens"
+alias knsls="kubens | cat"
 alias cctl="clusterctl"
 alias ksw="switch"
 
@@ -76,12 +80,12 @@ alias hs="helm status"
 
 ## helm get resources
 function hgr() { 
-    PROMPT_EOL_MARK='' helm get manifest "$1" | yq -r '[{"kind":.kind, "name":.metadata.name}] | .[] | [.kind, .name] | join(" ")' | grep -v "\-\-\-" | xargs -L 1 -I {} /bin/bash -c 'kubectl get {}' ''
+    PROMPT_EOL_MARK='' helm get manifest "$1" | yq -r '[{"kind":.kind, "name":.metadata.name}] | .[] | [.kind, .name] | join(" ")' | grep -v "\-\-\-" | xargs -L 1 -I {} /bin/bash -c 'kubectl get {} --show-kind' ''
 }
 
 ## helm get resources within namespace
 function hgrn {
-    PROMPT_EOL_MARK='' helm get manifest "$1" | yq -r '[{"namespace":.metadata.namespace, "kind":.kind, "name":.metadata.name}] | .[] | [.kind, .name, "-n", .namespace] | join(" ")' | grep -v "\-\-\-" | xargs -L 1 -I {} /bin/bash -c 'kubectl get {}' ''
+    PROMPT_EOL_MARK='' helm get manifest "$1" | yq -r '[{"namespace":.metadata.namespace, "kind":.kind, "name":.metadata.name}] | .[] | [.kind, .name, "-n", .namespace] | join(" ")' | grep -v "\-\-\-" | xargs -L 1 -I {} /bin/bash -c 'kubectl get {} --show-kind' ''
 }
 
 ## helm list resources

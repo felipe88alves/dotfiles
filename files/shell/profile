@@ -36,8 +36,8 @@ if ! [[ ":$PATH:" == *":$HOME/.local/bin:"* ]] && [ -d "$HOME/.local/bin" ]; the
 fi
 
 # GOPATH'
-GOPATH="${HOME}/go"
-GOBIN="${GOPATH/:*}/bin"
+# GOPATH="${HOME}/.local/go"
+GOBIN="${HOME}/.local/go/bin"
 PATH="${PATH}:${GOBIN}"
 
 # Krew
