@@ -3,6 +3,7 @@ docker
 docker-buildx
 fzf
 helm
+jq
 keyring
 kind
 krew

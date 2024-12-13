@@ -162,7 +162,9 @@ installPackages() {
   # sudo spctl --master-disable
 
   installBrewPkgs
-  installRosetta
+
+  ## TODO installRosetta isn't idempotent. Create aliases to start/stop/delete colima VMs
+  # installRosetta
 
 }
 

@@ -1,9 +1,10 @@
 github.com/axw/gocov/gocov
 github.com/go-critic/go-critic/cmd/gocritic
-github.com/fzipp/gocyclo/cmd/gocyclo
 github.com/go-delve/delve/cmd/dlv
+github.com/fzipp/gocyclo/cmd/gocyclo
 github.com/princjef/gomarkdoc/cmd/gomarkdoc
 github.com/spf13/cobra-cli
+github.com/stern/stern
 golang.org/x/tools/...
 sigs.k8s.io/controller-tools/cmd/controller-gen
 sigs.k8s.io/kind

@@ -5,13 +5,41 @@ alias dps="docker ps"
 alias dpsa="docker ps -a"
 alias dv="docker volume"
 alias dvls="docker volume ls"
-alias dex="docker exec -it"
+alias dexec="docker exec -it"
 alias drmi="docker rmi"
 
 alias dstop="docker stop"
 alias drm="docker remove"
 alias dcp="docker container prune"
 
-function drmia(){
-    docker rmi -f $(docker images -aq)
+alias dka='docker ps -a -q | xargs -r docker kill'
+alias drma='docker ps -a -q | xargs -r docker rm'
+alias drmv='docker volume prune'
+alias drmiu='docker rmi $(docker images | awk '\''/^<none>/ {print $3}'\'')'
+alias drmia='docker images -q | xargs -r docker rmi'
+alias dclean='docker-killall; docker-rm-all; docker-rmi-all'
+alias dgc='docker rmi $(docker images -f "dangling=true" -q)'
+
+function dretag() {
+  for image in $(docker images | grep "${1}" | awk '{print $1}'); do
+    image2=$(echo ${image} | sed -e "s/${1}/${2}/")
+    echo "Retagging ${image} as ${image2}"
+    docker tag ${image} ${image2}
+    docker push ${image2}
+  done
 }
+
+function dexecsh() {
+  docker exec -i -t $1 /bin/sh
+}
+
+# Colima aliases
+if [ -x "$(command -v colima)" ]; then
+  alias dockerd-bootstrap='colima start --mount $HOME/.local/docker:w --mount-inotify -c 10 -m 16 --disk 200'
+  alias dockerd-bootstrap-mac='colima start --mount $HOME/.local/docker:w --mount-inotify -c 10 -m 16 --disk 200 --ssh-agent --vm-type vz --vz-rosetta --mount-type virtiofs'
+  alias dockerd-stop='colima stop'
+  alias dockerd-teardown='colima delete'
+  alias dockerd-cleanup='rm -rf ~/Library/Caches/lima ~/.colima ~/.lima'
+
+  alias containerd-start='colima start --runtime containerd --mount $HOME/.local/docker:w --mount-inotify'
+fi

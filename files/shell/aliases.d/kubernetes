@@ -25,6 +25,7 @@ alias kgsec="kubectl get secret"
 alias kgseco="kubectl get secret -oyaml"
 alias kgrs="kubectl get replicaset"
 alias kgo="kubectl get -oyaml"
+alias kgoj="kubectl get -ojson"
 alias kgall="kubectl api-resources --verbs=list -o name | xargs -n 1 kubectl get --show-kind --ignore-not-found"
 alias kapi="kubectl api-resources"
 alias kapiv="kubectl api-versions"
@@ -41,12 +42,19 @@ alias kdrs="kubectl describe replicaset"
 
 alias krr="kubectl rollout restart"
 
+alias kdiff="kubectl diff -f"
 alias kcrt="kubectl get clusterreleasetemplate"
 alias kcrde="kubectl get clusterreleasedeployment"
 alias kcrel="kubectl get crel -A"
 
 alias kc="kubectl config"
 alias kccc="kubectl config current-context"
+
+alias kge="kubectl get events --sort-by='.lastTimestamp"
+function kgeres() {
+    kubectl get events --sort-by='.lastTimestamp' --field-selector involvedObject.name="${1}"
+}
+
 
 alias kdel="kubectl delete"
 alias ke="kubectl edit"
@@ -65,6 +73,15 @@ alias ksw="switch"
 alias kgpba="kubectl get pods -A | egrep -v '(Running|Completed)'"
 alias kgpb="kubectl get pods | egrep -v '(Running|Completed)'"
 
+## kubectl get status condition
+function kcond(){
+  kind=${1}
+  condType=${2}
+  condStatus=${3}
+  local filter=".items[]| select(.status != null)|select(.status.conditions[] != null)|select([.status.conditions[]|select(.type == \"${condType}\" and .status == \"${condStatus}\")]|length == 1)"
+  local table="([\"NAMESPACE\",\"NAME\"] | (., map(length*\"-\"))),(${filter} | [.metadata.namespace, .metadata.name]) | @tsv"
+  \kubectl get ${kind} -o json | jq -r "${table}"
+}
 
 # ----------------------------------------------------------
 
