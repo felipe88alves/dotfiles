@@ -4,7 +4,6 @@
 
 alias k="kubectl"
 alias kg="kubectl get"
-alias kga="kubectl get all"
 alias kgp="kubectl get pods"
 alias kgpa="kubectl get pods -A"
 alias kgpo="kubectl get pods -oyaml"
@@ -26,7 +25,9 @@ alias kgseco="kubectl get secret -oyaml"
 alias kgrs="kubectl get replicaset"
 alias kgo="kubectl get -oyaml"
 alias kgoj="kubectl get -ojson"
-alias kgall="kubectl api-resources --verbs=list -o name | xargs -n 1 kubectl get --show-kind --ignore-not-found"
+alias kga="kubectl get all"
+alias kgall="kubectl api-resources --namespaced --verbs=list -o name | xargs -n 1 kubectl get --show-kind --ignore-not-found"
+alias kgalla="kubectl api-resources --verbs=list -o name | xargs -n 1 kubectl get --show-kind --ignore-not-found -A"
 alias kapi="kubectl api-resources"
 alias kapiv="kubectl api-versions"
 
@@ -42,6 +43,7 @@ alias kdrs="kubectl describe replicaset"
 
 alias krr="kubectl rollout restart"
 
+
 alias kdiff="kubectl diff -f"
 alias kcrt="kubectl get clusterreleasetemplate"
 alias kcrde="kubectl get clusterreleasedeployment"
@@ -50,11 +52,23 @@ alias kcrel="kubectl get crel -A"
 alias kc="kubectl config"
 alias kccc="kubectl config current-context"
 
-alias kge="kubectl get events --sort-by='.lastTimestamp"
+alias kge="kubectl get events --sort-by='.lastTimestamp'"
+
 function kgeres() {
     kubectl get events --sort-by='.lastTimestamp' --field-selector involvedObject.name="${1}"
 }
 
+function kclone() {
+    kubectl get $1 $2 -oyaml | yq 'del(.metadata.ownerReferences, .metadata.resourceVersion, .metadata.uid, .metadata.creationTimestamp, .metadata.deletionTimestamp, .metadata.deletionGracePeriodTimestamp, .metadata.finalizers, .metadata.annotations."kubectl.kubernetes.io/last-applied-configuration", .status)'
+}
+
+alias kexec="kubectl exec -it"
+function kbash() {
+    kubectl exec -it $1 -- /bin/bash
+}
+function ksh() {
+    kubectl exec -it $1 -- /bin/sh
+}
 
 alias kdel="kubectl delete"
 alias ke="kubectl edit"
@@ -147,3 +161,11 @@ function er_find_error (){
 function ssl_cert_check () {
     kgsec $1 -n $2 -o jsonpath="{.data.$3}" | base64 -d | openssl x509 -text -noout | grep -E "Subject:|Not After" 
 }
+
+
+## cilium count policy per identity
+# kgp -l k8s-app=cilium -n kube-system --no-headers | awk '{print $1}' | xargs -n1 -I {} /bin/bash -c "echo {} && kubectl exec -i {} -c cilium-agent -- /bin/sh -c \"cilium policy selectors | wc -l\""
+
+## cilium count policy per identity > 50
+# pol_query="cilium policy selectors -o json | jq 'group_by(.selector) | map({selector: .[0].selector, identities_count: .[0].identities|length})' | jq -r 'map(select(.identities_count > 50))' | jq -r 'sort_by(.identities_count)'"
+# kgp -l k8s-app=cilium -n kube-system --no-headers | awk '{print $1}' | xargs -n1 -S1024 -I {} /bin/bash -c "echo {} && kubectl exec -i {} -c cilium-agent -- /bin/sh -c \"${pol_query}\""
