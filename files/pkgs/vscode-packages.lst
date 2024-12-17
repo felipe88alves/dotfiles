@@ -1,5 +1,8 @@
-vscodevim.vim
-ms-vscode-remote.remote-wsl
+asdine.cue
 eamodio.gitlens
+file-icons.file-icons
 golang.go
+github.github-vscode-theme
+ms-vscode-remote.remote-wsl
 redhat.ansible
+vscodevim.vim

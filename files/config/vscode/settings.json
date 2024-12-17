@@ -1,15 +1,24 @@
 {
-    "vim.disableAnnoyingNeovimMessage": true,
-    "atomKeymap.promptV3Features": true,
+    "workbench.iconTheme": "file-icons",
+    "workbench.sideBar.location": "left",
+    "workbench.colorTheme": "GitHub Dark",
     "editor.multiCursorModifier": "alt",
     "editor.formatOnPaste": true,
-    "workbench.iconTheme": "file-icons",
     "editor.renderWhitespace": "all",
     "editor.renderControlCharacters": true,
+    "editor.rulers": [
+        80,
+        120
+    ],
     "editor.minimap.renderCharacters": false,
     "editor.fontFamily": "'JetBrainsMono NFM', 'FuraCode Nerd Font Mono', Menlo, Monaco, 'Courier New', monospace",
+    "editor.inlineSuggest.enabled": true,
+    "editor.codeLensFontFamily": "'JetBrainsMono NFM'",
+    "editor.minimap.enabled": false,
     "terminal.integrated.fontFamily": "'JetBrainsMono NFM', 'FuraCode Nerd Font Mono', Menlo, Monaco, 'Courier New', monospace",
-    "workbench.sideBar.location": "left",
+    "gitlens.codeLens.enabled": false,
+    "gitlens.codeLens.recentChange.enabled": false,
+    "gitlens.codeLens.authors.enabled": false,
     "gitlens.advanced.messages": {
         "suppressCommitHasNoPreviousCommitWarning": false,
         "suppressCommitNotFoundWarning": false,
@@ -17,24 +26,13 @@
         "suppressGitVersionWarning": false,
         "suppressLineUncommittedWarning": false,
         "suppressNoRepositoryWarning": false,
-        "suppressResultsExplorerNotice": false,
-        "suppressShowKeyBindingsNotice": true
     },
-    "gitlens.historyExplorer.enabled": true,
-    "gitlens.settings.mode": "advanced",
-    "gitlens.codeLens.recentChange.enabled": false,
-    "gitlens.codeLens.authors.enabled": false,
     "gitlens.codeLens.scopes": [
         "containers",
         "document"
     ],
-    "gitlens.codeLens.enabled": false,
-    "diffEditor.originalEditable": true,
-    "gitlens.views.fileHistory.enabled": true,
-    "gitlens.views.lineHistory.enabled": true,
+    "diffEditor.codeLens": true,
     "window.zoomLevel": 0,
-    "workbench.colorTheme": "GitHub Dark",
-    "vsicons.dontShowNewVersionMessage": true,
     "vim.useSystemClipboard": true,
     "vim.handleKeys": {
         "<C-p>": false,
@@ -49,7 +47,7 @@
         "vs-kubernetes.helm-path.mac": "/Users/l0d01f4/.vs-kubernetes/tools/helm/darwin-amd64/helm"
     },
     "go.formatTool": "goimports",
-    "editor.inlineSuggest.enabled": true,
     "redhat.telemetry.enabled": true,
-    "editor.codeLensFontFamily": "'JetBrainsMono NFM'"
+    "files.insertFinalNewline": true,
+    "notebook.insertFinalNewline": true,
 }
