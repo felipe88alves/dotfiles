@@ -110,18 +110,39 @@ alias hh="helm history"
 alias hs="helm status"
 
 ## helm get resources
-function hgr() { 
-    PROMPT_EOL_MARK='' helm get manifest "$1" | yq -r '[{"kind":.kind, "name":.metadata.name}] | .[] | [.kind, .name] | join(" ")' | grep -v "\-\-\-" | xargs -L 1 -I {} /bin/bash -c 'kubectl get {} --show-kind' ''
+function hgra() {
+    PROMPT_EOL_MARK='' helm get manifest "$1" | yq '[{"kind":.kind, "name":.metadata.name}] | .[] | [.kind, .name] | join(" ")' | xargs -L 1 -I {} /bin/bash -c 'kubectl get {} --show-kind' ''
 }
 
-## helm get resources within namespace
-function hgrn {
-    PROMPT_EOL_MARK='' helm get manifest "$1" | yq -r '[{"namespace":.metadata.namespace, "kind":.kind, "name":.metadata.name}] | .[] | [.kind, .name, "-n", .namespace] | join(" ")' | grep -v "\-\-\-" | xargs -L 1 -I {} /bin/bash -c 'kubectl get {} --show-kind' ''
+## helm get resources with namespace
+function hgran {
+    PROMPT_EOL_MARK='' helm get manifest "$1" | yq '[{"namespace":.metadata.namespace, "kind":.kind, "name":.metadata.name}] | .[] | [.kind, .name, "-n", .namespace] | join(" ")' | grep -v "\-\-\-" | xargs -L 1 -I {} /bin/bash -c 'kubectl get {}' ''
+}
+
+function hgro() {
+    helm get manifest "$1" | KIND="$2" NAME="$3" yq 'select(.kind == env(KIND) and .metadata.name == env(NAME))'
+}
+
+function hdiff() {
+    helm get manifest "$1" | KIND="$2" NAME="$3" yq 'select(.kind == env(KIND) and .metadata.name == env(NAME))' | kubectl diff -f -
+}
+
+function hgmiss() {
+    PROMPT_EOL_MARK='' helm get manifest "$1" | yq '[{"kind":.kind, "name":.metadata.name}] | .[] | [.kind, .name] | join(" ")' | xargs -L 1 -I {} /bin/bash -c 'kubectl get {} --show-kind' '' | grep "NotFound"
 }
 
 ## helm list resources
 function hlr {
-    helm get manifest "$1" | yq -r '[{"kind":.kind, "name":.metadata.name}] | .[] | [.kind, .name] | join(" ")' | grep -v "\-\-\-" 
+    helm get manifest "$1" | yq '[{"kind":.kind, "name":.metadata.name}] | .[] | [.kind, .name] | join(" ")' | column -t
+}
+
+function hlrn {
+    helm get manifest "$1" | yq '[{"kind":.kind, "namespace":.metadata.namespace, "name":.metadata.name}] | .[] | [.kind, .name, .namespace // "<empty>"] | join(" ")' | column -t
+}
+
+## helm list resources by kind
+function hlrk {
+    helm get manifest "$1" | KIND="$2" yq 'select(.kind == env(KIND)) | [{"kind":.kind, "name":.metadata.name}] | .[] | [.kind, .name] | del(.. | select(tag == "!!seq" and length == 0)) | join(" ")' | column -t
 }
 
 # ----------------------------------------------------------
