@@ -1,0 +1,56 @@
+{
+  "workbench.iconTheme": "file-icons",
+  "workbench.sideBar.location": "left",
+  "workbench.colorTheme": "GitHub Dark",
+  "editor.multiCursorModifier": "alt",
+  "editor.formatOnPaste": true,
+  "editor.renderWhitespace": "all",
+  "editor.renderControlCharacters": true,
+  "editor.rulers": [
+    80,
+    120
+  ],
+  "editor.minimap.renderCharacters": false,
+  "editor.fontFamily": "'JetBrainsMono NFM', 'FuraCode Nerd Font Mono', Menlo, Monaco, 'Courier New', monospace",
+  "editor.inlineSuggest.enabled": true,
+  "editor.codeLensFontFamily": "'JetBrainsMono NFM'",
+  "editor.minimap.enabled": false,
+  "terminal.integrated.fontFamily": "'JetBrainsMono NFM', 'FuraCode Nerd Font Mono', Menlo, Monaco, 'Courier New', monospace",
+  "gitlens.codeLens.enabled": false,
+  "gitlens.codeLens.recentChange.enabled": false,
+  "gitlens.codeLens.authors.enabled": false,
+  "gitlens.advanced.messages": {
+    "suppressCommitHasNoPreviousCommitWarning": false,
+    "suppressCommitNotFoundWarning": false,
+    "suppressFileNotUnderSourceControlWarning": false,
+    "suppressGitVersionWarning": false,
+    "suppressLineUncommittedWarning": false,
+    "suppressNoRepositoryWarning": false
+  },
+  "gitlens.codeLens.scopes": [
+    "containers",
+    "document"
+  ],
+  "diffEditor.codeLens": true,
+  "window.zoomLevel": 0,
+  "vim.useSystemClipboard": true,
+  "vim.handleKeys": {
+    "<C-p>": false,
+    "<C-a>": false,
+    "<C-f>": false,
+    "<C-c>": false
+  },
+  "vs-kubernetes": {
+    "vs-kubernetes.kubectl-path.mac": "/Users/l0d01f4/.vs-kubernetes/tools/kubectl/kubectl",
+    "vs-kubernetes.draft-path.mac": "/Users/l0d01f4/.vs-kubernetes/tools/draft/darwin-amd64/draft",
+    "vs-kubernetes.minikube-path.mac": "/Users/l0d01f4/.vs-kubernetes/tools/minikube/darwin-amd64/minikube",
+    "vs-kubernetes.helm-path.mac": "/Users/l0d01f4/.vs-kubernetes/tools/helm/darwin-amd64/helm"
+  },
+  "go.formatTool": "goimports",
+  "redhat.telemetry.enabled": true,
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+  "files.trimTrailingWhitespaceInRegexAndStrings": true,
+  "notebook.insertFinalNewline": true,
+  "go.toolsManagement.autoUpdate": true
+}

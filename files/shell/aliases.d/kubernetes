@@ -26,8 +26,9 @@ alias kgrs="kubectl get replicaset"
 alias kgo="kubectl get -oyaml"
 alias kgoj="kubectl get -ojson"
 alias kga="kubectl get all"
-alias kgall="kubectl api-resources --namespaced --verbs=list -o name | xargs -n 1 kubectl get --show-kind --ignore-not-found"
-alias kgalla="kubectl api-resources --verbs=list -o name | xargs -n 1 kubectl get --show-kind --ignore-not-found -A"
+alias kgall="kubectl api-resources --namespaced --verbs=list -o name | grep -v events | xargs -n 1 kubectl get --show-kind --ignore-not-found"
+alias kgallc="kubectl api-resources --verbs=list -o name | grep -v events | xargs -n 1 kubectl get --show-kind --ignore-not-found"
+alias kgalla="kubectl api-resources --verbs=list -o name | grep -v events | xargs -n 1 kubectl get --show-kind --ignore-not-found -A"
 alias kapi="kubectl api-resources"
 alias kapiv="kubectl api-versions"
 
@@ -165,12 +166,12 @@ function er_check_sd {
 }
 
 ## Check access to JIRA - specific resource
-function er_check_jira (){ 
+function er_check_jira (){
     kgp -n monitoring "$@" -oname | xargs -I {} kubectl exec -n monitoring {} -c event-router -- curl -I -s -k -H "Content-Type: application/json" -H "Authorization: Basic ${SDAUTH}" https://jira.eng.vmware.com/rest/api/latest/issue/VDPENG-15300
 }
 
 ## Find error in logs
-function er_find_error (){ 
+function er_find_error (){
     stern er-event-router -n monitoring --since 2h --no-follow --only-log-lines | grep "$1"
 }
 
@@ -180,7 +181,7 @@ function er_find_error (){
 
 ## ssl cert check
 function ssl_cert_check () {
-    kgsec $1 -n $2 -o jsonpath="{.data.$3}" | base64 -d | openssl x509 -text -noout | grep -E "Subject:|Not After" 
+    kgsec $1 -n $2 -o jsonpath="{.data.$3}" | base64 -d | openssl x509 -text -noout | grep -E "Subject:|Not After"
 }
 
 

@@ -1,12 +1,16 @@
 colima
+cue
 docker
 docker-buildx
 fzf
 helm
 jq
+kcl-lang/tap/kcl
+kcl-lang/tap/kcl-lsp
 keyring
 kind
 krew
+kubebuilder
 kubectx
 python
 pipx

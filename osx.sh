@@ -185,10 +185,10 @@ installBrewPkgs() {
   brew_install_or_upgrade cask
   installPkgList "cask_install" files/pkgs/cask.lst
 
-  if [ -z $(grep "$(brew --prefix)/bin/bash" "/etc/shells") ]; then 
+  if [ -z $(grep "$(brew --prefix)/bin/bash" "/etc/shells") ]; then
     echo "$(brew --prefix)/bin/bash" | sudo tee -a /etc/shells >/dev/null
   fi
-  if [ -z $(grep "$(brew --prefix)/bin/zsh" "/etc/shells") ]; then 
+  if [ -z $(grep "$(brew --prefix)/bin/zsh" "/etc/shells") ]; then
     echo "$(brew --prefix)/bin/zsh" | sudo tee -a /etc/shells >/dev/null
   fi
 
@@ -324,6 +324,9 @@ installAll() {
 }
 
 case "$1" in
+"brew")
+  installBrewPkgs
+  ;;
 "packages" | "pkgs")
   installPackages
   ;;

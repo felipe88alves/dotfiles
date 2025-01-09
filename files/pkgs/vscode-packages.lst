@@ -3,6 +3,8 @@ eamodio.gitlens
 file-icons.file-icons
 golang.go
 github.github-vscode-theme
+kcl.kcl-vscode-extension
 ms-vscode-remote.remote-wsl
 redhat.ansible
+usernamehw.errorlens
 vscodevim.vim

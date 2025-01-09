@@ -29,7 +29,14 @@ installVscodeConfig() {
     settings="$HOME/Library/Application Support/Code/User"
   fi
   mkdir -p "$settings"
-  cp -r files/config/vscode/* "$settings/"
+
+  pushd files/config/vscode
+  jq -s add local.json default.json > settings.json
+  cp *settings* "$settings/"
+
+  rm settings.json
+
+  popd
 }
 
 installVscodePackages() {
@@ -62,7 +69,6 @@ installGitConf() {
 installShellConf() {
   cp files/shell/variables "${HOME}/.variables"
   cp files/shell/profile "${HOME}/.profile"
-  
   configAliases
 
   installBashConf
@@ -124,7 +130,6 @@ installZshConf() {
     git pull
     cd "${INSTALLDIR}" || exit
   fi
-  
 
   git_clone_or_update https://github.com/denysdovhan/spaceship-prompt.git "${ZSH_CUSTOM}/themes/spaceship-prompt"
   if [ ! -s "${ZSH_CUSTOM}/themes/spaceship.zsh-theme" ]; then
@@ -177,6 +182,9 @@ elif isFunction "install${CMD}"; then
 fi
 
 case "$CMD" in
+"brew")
+  installOSSpecific brew
+  ;;
 "ospkgs")
   installOSSpecific pkgs
   ;;
