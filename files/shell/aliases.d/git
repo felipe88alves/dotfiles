@@ -21,6 +21,7 @@ alias gpr="git pr"
 alias gps='git push'
 alias gsw="git switch"
 alias gr="git restore"
+alias grs="git restore --staged"
 alias gsts="git stash"
 alias gpop="git stash pop"
 
