@@ -4,6 +4,7 @@ docker
 docker-buildx
 fzf
 helm
+hugo
 jq
 kcl-lang/tap/kcl
 kcl-lang/tap/kcl-lsp
@@ -12,6 +13,8 @@ kind
 krew
 kubebuilder
 kubectx
+kustomize
 python
 pipx
+tree
 yq

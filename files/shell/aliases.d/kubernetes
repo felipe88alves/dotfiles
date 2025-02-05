@@ -26,6 +26,9 @@ alias kgrs="kubectl get replicaset"
 alias kgo="kubectl get -oyaml"
 alias kgoj="kubectl get -ojson"
 alias kga="kubectl get all"
+alias kgvap="kubectl get validatingadmissionpolicy"
+alias kgvapb="kubectl get validatingadmissionpolicybinding"
+
 alias kgall="kubectl api-resources --namespaced --verbs=list -o name | grep -v events | xargs -n 1 kubectl get --show-kind --ignore-not-found"
 alias kgallc="kubectl api-resources --verbs=list -o name | grep -v events | xargs -n 1 kubectl get --show-kind --ignore-not-found"
 alias kgalla="kubectl api-resources --verbs=list -o name | grep -v events | xargs -n 1 kubectl get --show-kind --ignore-not-found -A"
@@ -60,7 +63,7 @@ function kgeres() {
 }
 
 function kclone() {
-    kubectl get $1 $2 -oyaml | yq 'del(.metadata.ownerReferences, .metadata.resourceVersion, .metadata.uid, .metadata.creationTimestamp, .metadata.deletionTimestamp, .metadata.deletionGracePeriodTimestamp, .metadata.finalizers, .metadata.annotations."kubectl.kubernetes.io/last-applied-configuration", .status)'
+    kubectl get $1 $2 -oyaml | yq 'del(.metadata.ownerReferences, .metadata.generation, .metadata.resourceVersion, .metadata.uid, .metadata.creationTimestamp, .metadata.deletionTimestamp, .metadata.deletionGracePeriodTimestamp, .metadata.finalizers, .metadata.annotations."kubectl.kubernetes.io/last-applied-configuration", .status)'
 }
 
 alias kexec="kubectl exec -it"
@@ -76,6 +79,7 @@ alias ke="kubectl edit"
 alias kl="kubectl logs"
 alias klf="kubectl logs -f"
 alias kaf="kubectl apply -f"
+alias kak="kubectl apply -k"
 alias ka="kubectl apply"
 
 alias kct="kubectx"

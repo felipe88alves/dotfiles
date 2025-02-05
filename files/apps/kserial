@@ -1,0 +1,150 @@
+#!/usr/bin/env bash
+
+set -eo pipefail
+
+clusters=${SERIAL_CLUSTERS}
+
+app_vals=${SERIAL_APPS}
+skip_clusters=${SERIAL_SKIP}
+
+crds=(
+    contourconfigurations.projectcontour.io
+    contourdeployments.projectcontour.io
+    extensionservices.projectcontour.io
+    httpproxies.projectcontour.io
+    tlscertificatedelegations.projectcontour.io
+    certificates.cert-manager.io
+)
+
+##### Main ######
+    function main(){
+        local kubeconfig_dir="${HOME}/.bash/apps/kubeconfig"
+        mkdir -p ${kubeconfig_dir}
+        for cluster in ${clusters[@]}; do
+            f_kubeconfig="${kubeconfig_dir}/${cluster}.yaml"
+            if [[ " ${skip_clusters[@]} " =~ " ${cluster} " ]]; then
+                echo "Skiping cluster: ${cluster}"
+            else
+                # echo "${cluster}"
+                # process_cmd "${f_kubeconfig}"
+                update_kubeconfig "${cluster}"
+            fi
+        done
+    }
+
+##### utils ######
+    function validate_input(){
+        if [[ -z "${1}" ]]; then
+            echo "${2} var cannot be empty. Exiting script"
+            exit 1
+        fi
+    }
+
+##### Processing functions ######
+    function check_crds() {
+        for app in ${app_vals[@]}; do
+            if [[ ! -z "$(kubectl --kubeconfig=${kubeconf}  get helmrelease -n ${namespace} ${app} --ignore-not-found)" ]]; then
+                for crd in ${crds[@]}; do
+                    # echo ${crd}
+                    if [[ -z "$(kubectl --kubeconfig=${kubeconf}  get crds -n ${namespace} ${crd} --ignore-not-found)" ]]; then
+                        echo "CRD not found: ${crd}"
+                    fi
+                    # kubectl --kubeconfig=${kubeconf}  get crds -n ${namespace} ${crd} | awk '(NR>1)'
+                done
+                break
+            else
+                echo "FluxCD HelmRelease not found: ${app}"
+            fi
+        done
+
+    }
+
+    function check_helm_resource_status() {
+        if [[ -n "$(helm --kubeconfig=${kubeconf} list -n ${namespace} -a | egrep ^${app})" ]]; then
+            get_helm="$(helm --kubeconfig=${kubeconf} list -n ${namespace} -a | egrep ^${app})"
+            # echo "${get_helm[*]}"
+            helm_app="$(echo ${get_helm} | awk -F ' ' '{print $1}')"
+            helm_ns="$(echo ${get_helm} | awk -F ' ' '{print $2}')"
+            local helm_status="$(helm --kubeconfig=${kubeconf} status -n ${helm_ns} ${helm_app}  | grep "STATUS")"
+            if [[ "${helm_status}" != "STATUS: deployed" ]]; then
+                echo "Helm Release has not deployed: ${helm_status}"
+            fi
+        else
+            echo "Helm Release resource for helmrelease ${app} NOT found"
+        fi
+    }
+
+    function get_helm_resources() {
+        if [[ ! -z "$(helm --kubeconfig=${kubeconf} list -n ${namespace} | egrep ^${app})" ]]; then
+            helm --kubeconfig=${kubeconf} get manifest -n ${namespace} ${app} | egrep "^kind:" | awk '{print $2}' | sort -u | xargs -L 1 -I {} printf "echo {} && kubectl --kubeconfig=${kubeconf} get {} -A | grep ${app}\n" > tmp.tmp
+            sh ./tmp.tmp
+            rm ./tmp.tmp
+        fi
+    }
+
+    function delete_helm_resources() {
+        if [[ ! -z "$(helm --kubeconfig=${kubeconf} list -n ${namespace} | egrep ^${app})" ]]; then
+            helm --kubeconfig=${kubeconf} uninstall --debug -n ${namespace} ${app}
+        fi
+    }
+
+    function get_helmrelease() {
+        if [[ ! -z "$(kubectl --kubeconfig=${kubeconf}  get helmrelease -n ${namespace} ${app} --ignore-not-found)" ]]; then
+            kubectl --kubeconfig=${kubeconf}  get helmrelease -n ${namespace} ${app} | awk '(NR>1)'
+        fi
+    }
+
+    function delete_helmrelease() {
+        if [[ ! -z "$(kubectl --kubeconfig=${kubeconf}  get helmrelease -n ${namespace} ${app} --ignore-not-found)" ]]; then
+            kubectl --kubeconfig=${kubeconf}  delete helmrelease -n ${namespace} ${app}
+        fi
+    }
+
+    function get_k8s_resource() {
+        if [[ ! -z "$(kubectl --kubeconfig=${kubeconf}  get ${app} -A --ignore-not-found)" ]]; then
+            kubectl --kubeconfig=${kubeconf}  get ${app} -A | awk '(NR>1)'
+        fi
+    }
+
+    function get_resource_capacity() {
+        export KUBECONFIG=${kubeconf}
+        kubectl resource_capacity -u -p
+    }
+
+##### Config ######
+    function update_kubeconfig(){
+        local cluster_name="${1}"
+
+        validate_input "${cluster_name}" "cluster_name"
+        kubectx "${cluster_name}"
+        kubectl config view --minify > "${HOME}/.bash/apps/kubeconfig/${cluster_name}"
+        ca=$(yq ".clusters[] | select(.name == \"${cluster_name}\").cluster.certificate-authority-data" ${HOME}/.kube/config)
+        yq -e -i ".clusters |= map(select(.name == \"${cluster_name}\").cluster.certificate-authority-data = \"${ca}\")" ~/.bash/apps/kubeconfig/${cluster_name}
+    }
+
+    function process_cmd(){
+        local kubeconf="${1}"
+
+        validate_input "${kubeconf}" "kubeconf"
+        # get_tenant_resource_capacity ${kubeconf}
+        # kubectl --kubeconfig=${kubeconf} get pods -A
+        # kubectl --kubeconfig=${kubeconf} get ns
+
+        # Modify the line below to run a different k8s command
+        for app in ${app_vals[@]}; do
+            # kubectl --kubeconfig=${kubeconf} rollout restart deploy ${app} -n monitoring
+            get_k8s_resource
+            # get_helmrelease "${kubeconf}" "${app}"
+            # delete_helmrelease "${kubeconf}" "${app}"
+
+            # check_helm_resource_status
+        #     # get_helm_resources
+        #     # delete_helm_resources
+        done
+
+        # check_crds
+        echo ""
+    }
+
+##### Main Program ######
+    main
