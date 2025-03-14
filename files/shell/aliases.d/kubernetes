@@ -11,6 +11,8 @@ alias kgs="kubectl get services"
 alias kgso="kubectl get services -oyaml"
 alias kgd="kubectl get deploy"
 alias kgdo="kubectl get deploy -oyaml"
+alias kgds="kubectl get daemonset"
+alias kgdso="kubectl get daemonset -oyaml"
 alias kgj="kubectl get job"
 alias kgjo="kubectl get job -oyaml"
 alias kghr="kubectl get helmrelease"
@@ -22,12 +24,18 @@ alias kging="kubectl get ingress"
 alias kgingo="kubectl get ingress -oyaml"
 alias kgsec="kubectl get secret"
 alias kgseco="kubectl get secret -oyaml"
+alias kgns="kubectl get namespace"
+alias kgnso="kubectl get namespace -oyaml"
+alias kgnsb="kubectl get namespace | grep -v Active"
 alias kgrs="kubectl get replicaset"
 alias kgo="kubectl get -oyaml"
 alias kgoj="kubectl get -ojson"
 alias kga="kubectl get all"
 alias kgvap="kubectl get validatingadmissionpolicy"
+alias kgvapo="kubectl get validatingadmissionpolicy -oyaml"
 alias kgvapb="kubectl get validatingadmissionpolicybinding"
+alias kgvapw="kgvap -ojson | jq -r '[\"NAME\", \"FIELD_REF\", \"WARNING\"], (.items[] |[.metadata.name,.status.typeChecking.expressionWarnings[]?.fieldRef,.status.typeChecking.expressionWarnings[]?.warning]) | join(\" \")' | column -t"
+alias kgvapbo="kubectl get validatingadmissionpolicybinding -oyaml"
 
 alias kgall="kubectl api-resources --namespaced --verbs=list -o name | grep -v events | xargs -n 1 kubectl get --show-kind --ignore-not-found"
 alias kgallc="kubectl api-resources --verbs=list -o name | grep -v events | xargs -n 1 kubectl get --show-kind --ignore-not-found"
@@ -75,6 +83,7 @@ function ksh() {
 }
 
 alias kdel="kubectl delete"
+alias kdelf="kubectl delete -f"
 alias ke="kubectl edit"
 alias kl="kubectl logs"
 alias klf="kubectl logs -f"
@@ -115,8 +124,13 @@ alias hh="helm history"
 alias hs="helm status"
 
 ## helm get resources
-function hgra() {
+function hgr() {
     PROMPT_EOL_MARK='' helm get manifest "$1" | yq '[{"kind":.kind, "name":.metadata.name}] | .[] | [.kind, .name] | join(" ")' | xargs -L 1 -I {} /bin/bash -c 'kubectl get {} --show-kind' ''
+}
+
+## helm get resources in all namespaces
+function hgra() {
+    PROMPT_EOL_MARK='' helm get manifest "$1" | yq '[{"kind":.kind, "name":.metadata.name}] | .[] | [.kind, .name] | join(" ")' | xargs -L 1 -I {} /bin/bash -c 'kubectl get {} --show-kind -A' ''
 }
 
 ## helm get resources with namespace
